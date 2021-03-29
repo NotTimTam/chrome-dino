@@ -1,2 +1,2 @@
 # chrome-dino
-gaem
+gamee

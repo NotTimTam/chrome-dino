@@ -1,15 +1,28 @@
 "use strict";
 
+// Player Movement
+
+
 // player data.
 let player = {
     anim: {
         speed: 10,
         frame: 0,
         currentAnim: "stand",
-        stand: [],
-        run: [],
-        duck: [],
-        die: []
+        stand: [
+            "/images/stand_1.png",
+        ],
+        run: [
+            "/images/run_1.png",
+            "/images/run_2.png",
+        ],
+        duck: [
+            "/images_1/duck_1.png",
+            "/images_1/duck_2.png",
+        ],
+        die: [
+            "/images_1/die_1.png",
+        ]
     },
 
     pos: {
@@ -17,9 +30,21 @@ let player = {
         y: 0
     },
 
+    events: function () {
+        window.addEventListener("keydown", (e) => {
+            if (e.key === " " || e.key === "ArrowUp") {
+                
+            }
+        }) 
+    }
+    
+
     speed: 0,
     health: 1
 };
+
+// begin animating the player.
+this.animate = setInterval(player_animate_frame, 1000 / player.anim.speed);
 
 // initialize the player's position.
 function player_reset_pos() {

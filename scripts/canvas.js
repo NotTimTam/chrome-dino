@@ -4,13 +4,12 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // screen dimensions that factor the device pixel ratio.
-let screenWidth = window.devicePixelRatio * canvas.clientWidth;
-let screenHeight = window.devicePixelRatio * canvas.clientHeight;
+let screenWidth;
+let screenHeight;
 function screen_fix_width() {
-    screenWidth = window.devicePixelRatio * canvas.clientWidth;
-    screenHeight = window.devicePixelRatio * canvas.clientHeight;
+    screenWidth = (window.devicePixelRatio * canvas.clientWidth) / 4;
+    screenHeight = (window.devicePixelRatio * canvas.clientHeight) / 4;
 }
-player_reset_pos();
 
 // canvas dimensions that factor in the screen width.
 function canvas_fix_resolution() {
@@ -18,6 +17,10 @@ function canvas_fix_resolution() {
 
     canvas.setAttribute("width", screenWidth);
     canvas.setAttribute("height", screenHeight);
+
+    // reset object positioning on the canvas.
+    player_reset_pos();
+    ground_reset_pos();
 }
 canvas_fix_resolution();
 window.addEventListener("resize", canvas_fix_resolution);
@@ -48,6 +51,7 @@ function tick() {
             canTick = false;
 
             canvas_clear();
+            ground_draw_frame();
             player_draw_frame();
 
 

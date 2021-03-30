@@ -76,6 +76,6 @@ function ground_draw_frame() {
 }
 
 function ground_reset_pos(offset = 28) {
-    ground.step1.y = Math.round(screenHeight - 12);
-    ground.step2.y = Math.round(screenHeight - 12);
+    ground.step1.y = Math.round(screenHeight - 22);
+    ground.step2.y = Math.round(screenHeight - 22);
 }

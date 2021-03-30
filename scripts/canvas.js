@@ -30,16 +30,15 @@ function canvas_clear() {
     ctx.clearRect(0, 0, screenWidth, screenHeight);
 }
 
+// load all animation frames.
+function canvas_load_frames() {
+    player_load_frames();
+}
+canvas_load_frames();
+
 // render an image.
-function canvas_draw_image(src, x, y) {
-    var image = new Image();
-
-    image.onload = function()
-    {
-        ctx.drawImage(image, x, y);
-    }
-
-    image.src = src;
+function canvas_draw_image(image, x, y) {
+    ctx.drawImage(image, x, y);
 }
 
 // tick function.
@@ -61,5 +60,5 @@ function tick() {
         return;
     }
 }
-window.setInterval(tick, 16.7);
+window.setInterval(tick, 33.3); // 16.7 is 60fps
 

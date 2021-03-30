@@ -8,20 +8,21 @@ let player = {
     anim: {
         speed: 10,
         frame: 0,
-        currentAnim: "stand",
+        currentAnim: "run",
+        animationCache: ["stand", "run", "duck", "die"],
         stand: [
-            "/images/stand_1.png",
+            "../images/stand_1.png",
         ],
         run: [
-            "/images/run_1.png",
-            "/images/run_2.png",
+            "../images/run_1.png",
+            "../images/run_2.png",
         ],
         duck: [
-            "/images_1/duck_1.png",
-            "/images_1/duck_2.png",
+            "../images/duck_1.png",
+            "../images/duck_2.png",
         ],
         die: [
-            "/images_1/die_1.png",
+            "../images/die_1.png",
         ]
     },
 
@@ -36,7 +37,7 @@ let player = {
                 
             }
         }) 
-    }
+    },
     
 
     speed: 0,
@@ -56,10 +57,30 @@ function player_reset_pos() {
 function player_animate_frame() {
     player.anim.frame ++;
 
-    if (player.anim.frame > player.anim[player.anim.currentAnim].length) {
+    if (player.anim.frame >= player.anim[player.anim.currentAnim].length) {
         player.anim.frame = 0;
     }
 }
+
+// load the player's frames.
+function player_load_frames() {
+    for (let i in player.anim.animationCache) {
+        let currentAnim = player.anim[player.anim.animationCache[i]];
+
+        let newAnimationFrames = [];
+
+        for (let j in currentAnim) {
+            let image = new Image();
+
+            image.src = currentAnim[j];
+            newAnimationFrames.push(image);
+
+            console.log(`IMAGE ${i}-${j}: ${image.src}`);
+        }
+
+        currentAnim = newAnimationFrames;
+    }
+};
 
 // get the current animation frame from the player.
 function player_get_frame() {

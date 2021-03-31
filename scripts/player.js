@@ -73,6 +73,17 @@ let player = {
 
             } else if (player.jump.active && e.key === "ArrowDown") {
 
+                let x2 = this.gravity;
+
+                let id2 = setInterval(() => {
+                    if (this.gravity >= this.downGravity) {
+                        clearInterval(id2)
+                    } else {
+                        x2 += 
+                        this.gravity += this.downGravity / 100;
+                    }
+                }, player.jump.speed) 
+
                 player.jump.gravity = player.jump.downGravity;
 
             } else if (e.key === "ArrowDown") {

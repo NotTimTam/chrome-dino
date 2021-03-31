@@ -32,13 +32,15 @@ class Ptero {
     }
 
     update() {
-        this.x -= this.speed;
+        for (let i = 0; i < this.speed; i += this.speed / 16) {
+            this.x -= this.speed / 16;
+        }
     }
 }
 
 // Ground
 let ground =  {
-    speed: 5,
+    speed: 2,
     image: undefined,
 
     step1: {
@@ -65,15 +67,15 @@ function ground_update_frame() {
     ground.step2.x -= ground.speed;
 
     if (ground.step1.x + 1200 <= 0) {
-        ground.step1.x = screenWidth;
+        ground.step1.x = 1200;
     }
 
     if (ground.step2.x + 1200 <= 0) {
-        ground.step2.x = screenWidth;
+        ground.step2.x = 1200;
     }
 
-    ground.step1.x = Math.round(ground.step1.x);
-    ground.step2.x = Math.round(ground.step2.x);
+    ground.step1.x = ground.step1.x;
+    ground.step2.x = ground.step2.x;
 }
 
 function ground_draw_frame() {

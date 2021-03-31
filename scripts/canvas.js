@@ -3,23 +3,14 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-// screen dimensions that factor the device pixel ratio.
-let screenWidth;
-let screenHeight;
-function screen_fix_width() {
-    screenWidth = (window.devicePixelRatio * canvas.clientWidth) / 4;
-    screenHeight = (window.devicePixelRatio * canvas.clientHeight) / 4;
-}
-
 // canvas dimensions that factor in the screen width.
 function canvas_fix_resolution() {
-    screen_fix_width();
+    screen_fix_size();
 
     canvas.setAttribute("width", screenWidth);
     canvas.setAttribute("height", screenHeight);
 
     // reset object positioning on the canvas.
-    player_reset_pos();
     ground_reset_pos();
 }
 canvas_fix_resolution();
@@ -32,7 +23,7 @@ function canvas_clear() {
 
 // load all animation frames.
 function canvas_load_frames() {
-    player_load_frames();
+    player_load_images();
 }
 canvas_load_frames();
 
@@ -46,6 +37,9 @@ let canTick = true;
 let paused = false;
 function tick() {
     if (!paused) {
+        player.xDistance += 0.18; // POINT EIGHTEEN POINT EIGHTEEN
+        document.getElementById("distance").innerText = Math.round(player.xDistance);
+
         if (canTick) {
             canTick = false;
 
@@ -53,12 +47,11 @@ function tick() {
             ground_draw_frame();
             player_draw_frame();
 
-
             canTick = true;
         }
     } else {
         return;
     }
 }
-window.setInterval(tick, 33.3); // 16.7 is 60fps
+window.setInterval(tick, 16.7); // 16.7 is 60fps
 

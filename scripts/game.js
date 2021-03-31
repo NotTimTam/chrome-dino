@@ -38,18 +38,28 @@ class Ptero {
 
 // Ground
 let ground =  {
-    speed: 8,
+    speed: 5,
+    image: undefined,
 
     step1: {
         x: 0,
-        y: 0
+        y: 0,
     },
 
     step2: {
         x: 1200,
-        y: 0
+        y: 0,
+    },
+
+    load_image: (src) => {
+        let image = new Image();
+        image.src = src;
+
+        ground.image = image;
     }
 };
+ground.load_image('../images/ground_1.png');
+
 function ground_update_frame() {
     ground.step1.x -= ground.speed;
     ground.step2.x -= ground.speed;
@@ -69,13 +79,11 @@ function ground_update_frame() {
 function ground_draw_frame() {
     ground_update_frame();
 
-    let frame = "images/ground_1.png";
-
-    canvas_draw_image(frame, ground.step1.x, ground.step1.y);
-    canvas_draw_image(frame, ground.step2.x, ground.step2.y);
+    canvas_draw_image(ground.image, ground.step1.x, ground.step1.y);
+    canvas_draw_image(ground.image, ground.step2.x, ground.step2.y);
 }
 
 function ground_reset_pos(offset = 28) {
-    ground.step1.y = Math.round(screenHeight - 22);
-    ground.step2.y = Math.round(screenHeight - 22);
+    ground.step1.y = Math.round(screenHeight - 16);
+    ground.step2.y = Math.round(screenHeight - 16);
 }

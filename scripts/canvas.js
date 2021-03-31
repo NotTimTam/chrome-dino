@@ -45,7 +45,9 @@ function tick() {
 
             canvas_clear();
             ground_draw_frame();
-            player_draw_frame();
+            player_tick();
+
+            player_render_hitbox(); // for debugging.
 
             canTick = true;
         }
@@ -54,4 +56,3 @@ function tick() {
     }
 }
 window.setInterval(tick, 16.7); // 16.7 is 60fps
-

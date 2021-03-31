@@ -1,5 +1,23 @@
 "use strict";
 
+let cactusImages = [
+    "/images/cactus_1.png",
+    "/images/cactus_2.png",
+    "/images/cactus_3.png",
+    "/images/cactus_group_1.png",
+    "/images/cactus_group_2.png",
+]
+
+class Cactus {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.speed = ground.speed;
+
+        this.sprite = cactusImages[Math.floor( Math.random * 5)]
+    }
+}
+
 // pterodactyl.
 class Ptero {
     constructor(x, y) {
@@ -12,7 +30,7 @@ class Ptero {
             frame: 0,
             currentAnim: "fly",
             fly: [
-                "/images/pt_1.png", 
+                "/images/pt_1.png",
                 "/images/pt_2.png"
             ]
         };
@@ -21,7 +39,7 @@ class Ptero {
     }
 
     frame() {
-        this.anim.frame ++;
+        this.anim.frame++;
         if (this.anim.frame > 1) {
             this.anim.frame = 0;
         }
@@ -39,7 +57,7 @@ class Ptero {
 }
 
 // Ground
-let ground =  {
+let ground = {
     speed: 2,
     image: undefined,
 

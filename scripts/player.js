@@ -73,14 +73,12 @@ let player = {
 
             } else if (player.jump.active && e.key === "ArrowDown") {
 
-                let x2 = this.gravity;
-
                 let id2 = setInterval(() => {
                     if (this.gravity >= this.downGravity) {
+                        console.log('hit')
                         clearInterval(id2)
                     } else {
-                        x2 += 
-                        this.gravity += this.downGravity / 100;
+                        player.jump.gravity += this.downGravity / 100;
                     }
                 }, player.jump.speed) 
 

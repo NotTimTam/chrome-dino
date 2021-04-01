@@ -87,7 +87,6 @@ let player = {
     events: () => {
         window.addEventListener( "keydown", ( e ) => {
             // If the plyer is not jumping and the key being pressed is space or the up arrow
-            console.log(e.key)
             if ( !player.jump.active && ( e.key === " " || e.key === "ArrowUp" ) && !player.buttons.down) {
                 let x = 0;
                 player.buttons.up = true;
@@ -202,6 +201,43 @@ let player = {
                 width: width / 1.5,
                 height: height / 2.5
             });
+        }
+    },
+
+    check_for_collisions: () => {
+        for (hitboxID in player.hitbox) {
+            let hitbox = player.hitbox[hitboxID];
+
+            let hitbox_pos = {
+                x: player.x + hitbox.offsetX,
+                y: player.y + hitbox.offsetY,
+                width: hitbox.width,
+                height: hitbox.height
+            };
+            
+            for (objectID in obstacles.objects) {
+                let object = obstacles.objects[objectID];
+
+                for (objectHitboxID in object.hitbox) {
+                    let objectHitbox = object.hitbox[objectHitboxID];
+
+                    let object_hitbox_pos = {
+                        x: object.x + objectHitbox.offsetX,
+                        y: object.y + objectHitbox.offsetY,
+                        width: objectHitbox.width,
+                        height: objectHitbox.height
+                    };
+
+                    if (
+                        hitbox_pos.x < object_hitbox_pos.x + object_hitbox_pos.width &&
+                        hitbox_pos.x + hitbox_pos.width > object_hitbox_pos.x &&
+                        hitbox_pos.y < object_hitbox_pos.y + object_hitbox_pos.height &&
+                        hitbox_pos.y + hitbox_pos.height > object_hitbox_pos.y
+                    ) {
+                        console.log("collision detected!");
+                    }
+                }
+            }
         }
     }
 };

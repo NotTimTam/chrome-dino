@@ -129,17 +129,17 @@ class Cactus {
         switch (this.sprite) {
             case "/images/cactus_1.png":
                 this.hitbox.push({
-                    offsetX: 0,
-                    offsetY: 0,
-                    width: width,
+                    offsetX: 5,
+                    offsetY: 5,
+                    width: width - 5,
                     height: height
                 });
                 break;
             case "/images/cactus_2.png":
                 this.hitbox.push({
-                    offsetX: 0,
-                    offsetY: 0,
-                    width: width,
+                    offsetX: 5,
+                    offsetY: 5,
+                    width: width - 10,
                     height: height
                 });
                 break;

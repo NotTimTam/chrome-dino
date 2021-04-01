@@ -131,8 +131,8 @@ class Cactus {
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 5,
-                    width: width - 5,
-                    height: height
+                    width: width - 10,
+                    height: height - 5
                 });
                 break;
             case "/images/cactus_2.png":
@@ -140,30 +140,30 @@ class Cactus {
                     offsetX: 5,
                     offsetY: 5,
                     width: width - 10,
-                    height: height
+                    height: height - 5
                 });
                 break;
             case "/images/cactus_3.png":
                 this.hitbox.push({
-                    offsetX: 0,
-                    offsetY: 0,
-                    width: width,
-                    height: height
+                    offsetX: 5,
+                    offsetY: 5,
+                    width: width - 10,
+                    height: height - 5
                 });
                 break;
             case "/images/cactus_group_1.png":
                 this.hitbox.push({
-                    offsetX: 0,
+                    offsetX: 5,
                     offsetY: 0,
-                    width: width,
+                    width: width - 10,
                     height: height
                 });
                 break;
             case "/images/cactus_group_2.png":
                 this.hitbox.push({
-                    offsetX: 0,
+                    offsetX: 5,
                     offsetY: 0,
-                    width: width,
+                    width: width - 10,
                     height: height
                 });
                 break;

@@ -4,6 +4,8 @@
 let player = {
     health: 1,
     xDistance: 0,
+    inTouch: false,
+    lastTouchCheck: false,
 
     jump: {
         speed: 1,
@@ -144,11 +146,17 @@ let player = {
 
     // runs every frame.
     render: () => {
+        if (player.check_for_collisions()) {
+            player.inTouch = true;
+        } else {
+            player.inTouch = false;
+        }
+
         player.set_animation();
 
         let frame = player.get_frame();
 
-        canvas_draw_image(frame, player.pos.x, player.pos.y)
+        canvas_draw_image(frame, player.pos.x, player.pos.y);
     },
 
     // set the player's animation based on the current action.
@@ -205,20 +213,22 @@ let player = {
     },
 
     check_for_collisions: () => {
-        for (hitboxID in player.hitbox) {
+        let hit = false;
+
+        for (let hitboxID in player.hitbox) {
             let hitbox = player.hitbox[hitboxID];
 
             let hitbox_pos = {
-                x: player.x + hitbox.offsetX,
-                y: player.y + hitbox.offsetY,
+                x: player.pos.x + hitbox.offsetX,
+                y: player.pos.y + hitbox.offsetY,
                 width: hitbox.width,
                 height: hitbox.height
             };
             
-            for (objectID in obstacles.objects) {
+            for (let objectID in obstacles.objects) {
                 let object = obstacles.objects[objectID];
 
-                for (objectHitboxID in object.hitbox) {
+                for (let objectHitboxID in object.hitbox) {
                     let objectHitbox = object.hitbox[objectHitboxID];
 
                     let object_hitbox_pos = {
@@ -228,17 +238,17 @@ let player = {
                         height: objectHitbox.height
                     };
 
-                    if (
-                        hitbox_pos.x < object_hitbox_pos.x + object_hitbox_pos.width &&
-                        hitbox_pos.x + hitbox_pos.width > object_hitbox_pos.x &&
-                        hitbox_pos.y < object_hitbox_pos.y + object_hitbox_pos.height &&
-                        hitbox_pos.y + hitbox_pos.height > object_hitbox_pos.y
-                    ) {
-                        console.log("collision detected!");
+                    if (hitbox_pos.x < object_hitbox_pos.x + object_hitbox_pos.width &&
+                    hitbox_pos.x + hitbox_pos.width > object_hitbox_pos.x &&
+                    hitbox_pos.y < object_hitbox_pos.y + object_hitbox_pos.height &&
+                    hitbox_pos.y + hitbox_pos.height > object_hitbox_pos.y) {
+                        hit = true;
                     }
                 }
             }
         }
+
+        return hit;
     }
 };
 

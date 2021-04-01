@@ -49,8 +49,7 @@ function tick() {
             obstacles.render();
             player.render();
 
-            player_render_hitbox(); // for debugging.
-            
+            player_render_hitbox(); // for debugging. 
 
             canTick = true;
         }

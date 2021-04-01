@@ -87,7 +87,8 @@ let player = {
     events: () => {
         window.addEventListener( "keydown", ( e ) => {
             // If the plyer is not jumping and the key being pressed is space or the up arrow
-            if ( !player.jump.active && ( e.key === " " || e.key === "ArrowUp" ) ) {
+            console.log(e.key)
+            if ( !player.jump.active && ( e.key === " " || e.key === "ArrowUp" ) && !player.buttons.down) {
                 let x = 0;
                 player.buttons.up = true;
                 player.jump.active = true;

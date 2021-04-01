@@ -2,7 +2,7 @@
 
 // Ground
 let ground = {
-    speed: 2,
+    speed: 3,
     image: undefined,
 
     step1: {
@@ -23,8 +23,10 @@ let ground = {
     },
 
     tick: () => {
-        ground.step1.x -= ground.speed;
-        ground.step2.x -= ground.speed;
+        for (let i = 0; i <= ground.speed; i += ground.speed / 16) {
+            ground.step1.x -= ground.speed / 16;
+            ground.step2.x -= ground.speed / 16;
+        }
 
         if (ground.step1.x + 1200 <= 0) {
             ground.step1.x = 1200;
@@ -65,6 +67,8 @@ let obstacles = {
         for (let objectID in obstacles.objects) {
             let object = obstacles.objects[objectID];
             object.render();
+
+            object_render_hitbox(object);
         }
     }
 };
@@ -98,11 +102,15 @@ class Cactus {
 
         this.hitbox = [];
 
+        this.calculate_hitbox();
+
         obstacles.objects.push(this);
     }
 
     tick() {
-        this.x -= ground.speed;
+        for (let i = 0; i <= ground.speed; i += ground.speed / 16) {
+            this.x -= ground.speed / 16;
+        }
 
         if (this.x + this.width < 0) {
             obstacles.objects.splice(obstacles.objects.indexOf(this), 1);
@@ -111,7 +119,6 @@ class Cactus {
 
     render() {
         canvas_draw_image(this.image, this.x, this.y);
-        object_render_hitbox(this);
     }
 
     calculate_hitbox() {        
@@ -166,7 +173,7 @@ class Cactus {
     }
 }
 window.setInterval(function () {
-    let cacti_s = new Cactus();
+    let cacti = new Cactus();
 }, 2000);
 
 // pterodactyl.
@@ -213,7 +220,7 @@ function object_render_hitbox(object) {
         ctx.beginPath();
         ctx.strokeStyle = "red";
         ctx.lineWidth = 1;
-        ctx.rect(object.pos.x + box.offsetX, object.pos.y + box.offsetY, box.width, box.height);
+        ctx.rect(object.x + box.offsetX, object.y + box.offsetY, box.width, box.height);
         ctx.stroke();
     }
 }

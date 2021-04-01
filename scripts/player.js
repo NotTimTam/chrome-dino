@@ -28,7 +28,7 @@ let player = {
         currentAnim: "stand",
         sources: {
             stand: [
-            "../images/stand_1.png",
+                "../images/stand_1.png",
             ],
             run: [
                 "../images/run_1.png",
@@ -52,24 +52,24 @@ let player = {
         y: Math.round(screenHeight - 47 - 5),
     },
 
-    hitbox: [ 
+    hitbox: [
         {
             offsetX: 14,
-            offsetY: 0, 
-            width: 44 / 2.5, 
-            height: 47 
-        }, 
-        { 
+            offsetY: 0,
+            width: 44 / 2.5,
+            height: 47
+        },
+        {
             offsetX: 14,
             offsetY: 0,
-            width: 44 / 1.5, 
-            height: 47 / 2.5 
-        } 
-        ],
+            width: 44 / 1.5,
+            height: 47 / 2.5
+        }
+    ],
 
     // load all the frame images for the player.
     load_images: () => {
-            for (let sourceList in player.anim.sources) {
+        for (let sourceList in player.anim.sources) {
             let currentSourceList = player.anim.sources[sourceList];
 
             for (let source in currentSourceList) {
@@ -87,39 +87,39 @@ let player = {
 
     // handles inputs and movement.
     events: () => {
-        window.addEventListener( "keydown", ( e ) => {
+        window.addEventListener("keydown", (e) => {
             // If the plyer is not jumping and the key being pressed is space or the up arrow
-            if ( !player.jump.active && ( e.key === " " || e.key === "ArrowUp" ) && !player.buttons.down) {
+            if (!player.jump.active && (e.key === " " || e.key === "ArrowUp") && !player.buttons.down) {
                 let x = 0;
                 player.buttons.up = true;
                 player.jump.active = true;
-                let id = setInterval( () => {
-                    if ( player.pos.y > Math.round( screenHeight - player.pos.height - 5) ) {
-                        player.pos.y = Math.round( screenHeight - player.pos.height - 5);
+                let id = setInterval(() => {
+                    if (player.pos.y > Math.round(screenHeight - player.pos.height - 5)) {
+                        player.pos.y = Math.round(screenHeight - player.pos.height - 5);
                         player.jump.active = false;
                         player.jump.height = player.jump.initialGravity;
-                        clearInterval( id );
+                        clearInterval(id);
                     } else {
-                        player.pos.y = Math.round( player.jump.gravity * x ** 2 + player.jump.height * x + Math.round( screenHeight - player.pos.height - 5) );
+                        player.pos.y = Math.round(player.jump.gravity * x ** 2 + player.jump.height * x + Math.round(screenHeight - player.pos.height - 5));
                         x += player.jump.interval;
                     }
-                }, player.jump.speed )
-            } else if ( player.jump.active && e.key === "ArrowDown" ) {
-                let id2 = setInterval( () => {
-                    if ( player.pos.y >= Math.round( screenHeight - player.pos.height - 5) ) {
-                        clearInterval( id2 )
+                }, player.jump.speed)
+            } else if (player.jump.active && e.key === "ArrowDown") {
+                let id2 = setInterval(() => {
+                    if (player.pos.y >= Math.round(screenHeight - player.pos.height - 5)) {
+                        clearInterval(id2)
                     } else {
                         player.jump.height -= player.jump.downGravity / 100;
                     }
-                }, player.jump.speed )
-            } else if ( e.key === "ArrowDown" ) {
+                }, player.jump.speed)
+            } else if (e.key === "ArrowDown") {
 
                 player.pos.height = 30;
                 player.pos.y = Math.round(screenHeight - player.pos.height - 5);
                 player.buttons.down = true;
-                
-            } else {}
-        } )
+
+            } else { }
+        })
 
         window.addEventListener("keyup", () => {
             player.buttons.down = false;
@@ -137,7 +137,7 @@ let player = {
 
     // move to the next frame.
     increase_frame: () => {
-        player.anim.frame ++;
+        player.anim.frame++;
 
         if (player.anim.frame >= player.anim.images[player.anim.currentAnim].length) {
             player.anim.frame = 0;
@@ -204,11 +204,11 @@ let player = {
                 width: width / 2.5,
                 height: height
             }, {
-                offsetX: 14,
-                offsetY: 0,
-                width: width / 1.5,
-                height: height / 2.5
-            });
+                    offsetX: 14,
+                    offsetY: 0,
+                    width: width / 1.5,
+                    height: height / 2.5
+                });
         }
     },
 
@@ -224,7 +224,7 @@ let player = {
                 width: hitbox.width,
                 height: hitbox.height
             };
-            
+
             for (let objectID in obstacles.objects) {
                 let object = obstacles.objects[objectID];
 
@@ -239,9 +239,9 @@ let player = {
                     };
 
                     if (hitbox_pos.x < object_hitbox_pos.x + object_hitbox_pos.width &&
-                    hitbox_pos.x + hitbox_pos.width > object_hitbox_pos.x &&
-                    hitbox_pos.y < object_hitbox_pos.y + object_hitbox_pos.height &&
-                    hitbox_pos.y + hitbox_pos.height > object_hitbox_pos.y) {
+                        hitbox_pos.x + hitbox_pos.width > object_hitbox_pos.x &&
+                        hitbox_pos.y < object_hitbox_pos.y + object_hitbox_pos.height &&
+                        hitbox_pos.y + hitbox_pos.height > object_hitbox_pos.y) {
                         hit = true;
                     }
                 }

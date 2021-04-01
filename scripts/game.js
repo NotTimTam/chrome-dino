@@ -2,7 +2,7 @@
 
 // Ground
 let ground = {
-    speed: 3,
+    speed: 5,
     image: undefined,
 
     step1: {
@@ -23,9 +23,9 @@ let ground = {
     },
 
     tick: () => {
-        for (let i = 0; i <= ground.speed; i += ground.speed / 16) {
-            ground.step1.x -= ground.speed / 16;
-            ground.step2.x -= ground.speed / 16;
+        for (let i = 0; i <= ground.speed; i += ground.speed / 100) {
+            ground.step1.x -= ground.speed / 100;
+            ground.step2.x -= ground.speed / 100;
         }
 
         if (ground.step1.x + 1200 <= 0) {
@@ -42,7 +42,7 @@ let ground = {
 
     render: () => {
         canvas_draw_image(ground.image, ground.step1.x, ground.step1.y);
-    canvas_draw_image(ground.image, ground.step2.x, ground.step2.y);
+        canvas_draw_image(ground.image, ground.step2.x, ground.step2.y);
     }
 };
 ground.load_image('../images/ground_1.png');
@@ -76,11 +76,8 @@ let obstacles = {
 // cactus.
 class Cactus {
     constructor() {
-        this.x = screenWidth;
-        this.y = 0;
-        this.width = 0;
-        this.height = 0;
-        this.speed = ground.speed;
+        this.width;
+        this.height;
 
         this.sources = [
             "/images/cactus_1.png",
@@ -95,16 +92,24 @@ class Cactus {
         this.image = new Image();
         this.image.src = this.sprite;
 
-        this.width = this.image.width;
-        this.height = this.image.height;
+        let self = this;
 
-        this.y = Math.round((screenHeight - this.height) - 5);
+        this.image.onload = function () {
+            self.width = self.image.width;
+            self.height = self.image.height;
 
-        this.hitbox = [];
+            console.log([self.image.width, self.image.height]);
 
-        this.calculate_hitbox();
+            self.x = screenWidth;
+            self.y = Math.round((screenHeight - self.height) - 5);
+            self.speed = ground.speed;
 
-        obstacles.objects.push(this);
+            self.hitbox = [];
+
+            self.calculate_hitbox();
+
+            obstacles.objects.push(self);
+        }
     }
 
     tick() {
@@ -125,6 +130,8 @@ class Cactus {
         let width = this.image.width;
         let height = this.image.height;
 
+        this.width = width;
+        this.height = height;
 
         switch (this.sprite) {
             case "/images/cactus_1.png":
@@ -174,7 +181,7 @@ class Cactus {
 }
 window.setInterval(function () {
     let cacti = new Cactus();
-}, 2000);
+}, 1500);
 
 // pterodactyl.
 class Ptero {

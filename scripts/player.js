@@ -184,10 +184,10 @@ let player = {
 
         if (player.anim.currentAnim == "duck") {
             player.hitbox.push({
-                offsetX: 0,
-                offsetY: 0,
-                width: width,
-                height: height
+                offsetX: 5,
+                offsetY: 5,
+                width: width - 10,
+                height: height - 10
             });
         } else {
             player.hitbox.push({

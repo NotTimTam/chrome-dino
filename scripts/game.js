@@ -118,6 +118,7 @@ class Cactus {
         let width = this.image.width;
         let height = this.image.height;
 
+
         switch (this.sprite) {
             case "/images/cactus_1.png":
                 this.hitbox.push({
@@ -159,6 +160,7 @@ class Cactus {
                     height: height
                 });
                 break;
+            default: break;
         }
 
     }

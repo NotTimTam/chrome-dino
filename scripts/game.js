@@ -1,5 +1,56 @@
 "use strict";
 
+// Ground
+let ground = {
+    speed: 2,
+    image: undefined,
+
+    step1: {
+        x: 0,
+        y: 0,
+    },
+
+    step2: {
+        x: 1200,
+        y: 0,
+    },
+
+    load_image: (src) => {
+        let image = new Image();
+        image.src = src;
+
+        ground.image = image;
+    },
+
+    tick: () => {
+        ground.step1.x -= ground.speed;
+        ground.step2.x -= ground.speed;
+
+        if (ground.step1.x + 1200 <= 0) {
+            ground.step1.x = 1200;
+        }
+
+        if (ground.step2.x + 1200 <= 0) {
+            ground.step2.x = 1200;
+        }
+
+        ground.step1.x = ground.step1.x;
+        ground.step2.x = ground.step2.x;
+    },
+
+    render: () => {
+        canvas_draw_image(ground.image, ground.step1.x, ground.step1.y);
+    canvas_draw_image(ground.image, ground.step2.x, ground.step2.y);
+    }
+};
+ground.load_image('../images/ground_1.png');
+window.setInterval(ground.tick, 16.7);
+
+function ground_reset_pos(offset = 28) {
+    ground.step1.y = Math.round(screenHeight - 16);
+    ground.step2.y = Math.round(screenHeight - 16);
+}
+
 // obstacles.
 let obstacles = {
     objects: [],
@@ -12,15 +63,13 @@ let obstacles = {
     }
 };
 
-window.setInterval(function () {
-    let cacti = new Cactus(Math.random() * screenWidth, Math.random() * screenHeight);
-}, 1000);
-
 // cactus.
 class Cactus {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+    constructor() {
+        this.x = screenWidth;
+        this.y = 0;
+        this.width = 0;
+        this.height = 0;
         this.speed = ground.speed;
 
         this.sources = [
@@ -36,13 +85,78 @@ class Cactus {
         this.image = new Image();
         this.image.src = this.sprite;
 
+        this.width = this.image.width;
+        this.height = this.image.height;
+
+        this.y = Math.round((screenHeight - this.height) - 5);
+
+        this.hitbox = [];
+
         obstacles.objects.push(this);
     }
 
     tick() {
         canvas_draw_image(this.image, this.x, this.y);
+
+        this.x -= ground.speed;
+
+        if (this.x + this.width < 0) {
+            obstacles.objects.splice(obstacles.objects.indexOf(this), 1);
+        }
+    }
+
+    calculate_hitbox() {        
+        let width = this.image.width;
+        let height = this.image.height;
+
+        switch (this.sprite) {
+            case "/images/cactus_1.png":
+                this.hitbox.push({
+                    offsetX: 0,
+                    offsetY: 0,
+                    width: width,
+                    height: height
+                });
+                break;
+            case "/images/cactus_2.png":
+                this.hitbox.push({
+                    offsetX: 0,
+                    offsetY: 0,
+                    width: width,
+                    height: height
+                });
+                break;
+            case "/images/cactus_3.png":
+                this.hitbox.push({
+                    offsetX: 0,
+                    offsetY: 0,
+                    width: width,
+                    height: height
+                });
+                break;
+            case "/images/cactus_group_1.png":
+                this.hitbox.push({
+                    offsetX: 0,
+                    offsetY: 0,
+                    width: width,
+                    height: height
+                });
+                break;
+            case "/images/cactus_group_2.png":
+                this.hitbox.push({
+                    offsetX: 0,
+                    offsetY: 0,
+                    width: width,
+                    height: height
+                });
+                break;
+        }
+
     }
 }
+window.setInterval(function () {
+    let cacti_s = new Cactus();
+}, 2000);
 
 // pterodactyl.
 class Ptero {
@@ -80,56 +194,4 @@ class Ptero {
             this.x -= this.speed / 16;
         }
     }
-}
-
-// Ground
-let ground = {
-    speed: 2,
-    image: undefined,
-
-    step1: {
-        x: 0,
-        y: 0,
-    },
-
-    step2: {
-        x: 1200,
-        y: 0,
-    },
-
-    load_image: (src) => {
-        let image = new Image();
-        image.src = src;
-
-        ground.image = image;
-    }
-};
-ground.load_image('../images/ground_1.png');
-
-function ground_update_frame() {
-    ground.step1.x -= ground.speed;
-    ground.step2.x -= ground.speed;
-
-    if (ground.step1.x + 1200 <= 0) {
-        ground.step1.x = 1200;
-    }
-
-    if (ground.step2.x + 1200 <= 0) {
-        ground.step2.x = 1200;
-    }
-
-    ground.step1.x = ground.step1.x;
-    ground.step2.x = ground.step2.x;
-}
-
-function ground_draw_frame() {
-    ground_update_frame();
-
-    canvas_draw_image(ground.image, ground.step1.x, ground.step1.y);
-    canvas_draw_image(ground.image, ground.step2.x, ground.step2.y);
-}
-
-function ground_reset_pos(offset = 28) {
-    ground.step1.y = Math.round(screenHeight - 16);
-    ground.step2.y = Math.round(screenHeight - 16);
 }

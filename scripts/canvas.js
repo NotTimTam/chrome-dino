@@ -44,7 +44,7 @@ function tick() {
             canTick = false;
 
             canvas_clear();
-            ground_draw_frame();
+            ground.render();
             player.tick();
 
             obstacles.tick();

@@ -50,7 +50,20 @@ let player = {
         y: Math.round(screenHeight - 47 - 5),
     },
 
-    hitbox: [ { width: 44 / 1.5, height: 47 }, { width: 44, height: 47 / 2.5 } ],
+    hitbox: [ 
+        {
+            offsetX: 14,
+            offsetY: 0, 
+            width: 44 / 2.5, 
+            height: 47 
+        }, 
+        { 
+            offsetX: 14,
+            offsetY: 0,
+            width: 44 / 1.5, 
+            height: 47 / 2.5 
+        } 
+        ],
 
     // load all the frame images for the player.
     load_images: () => {
@@ -90,7 +103,6 @@ let player = {
                     }
                 }, player.jump.speed )
             } else if ( player.jump.active && e.key === "ArrowDown" ) {
-                console.log("hit")
                 let id2 = setInterval( () => {
                     if ( player.pos.y >= Math.round( screenHeight - player.pos.height - 5) ) {
                         clearInterval( id2 )
@@ -172,15 +184,21 @@ let player = {
 
         if (player.anim.currentAnim == "duck") {
             player.hitbox.push({
+                offsetX: 0,
+                offsetY: 0,
                 width: width,
                 height: height
             });
         } else {
             player.hitbox.push({
-                width: width / 1.5,
+                offsetX: 14,
+                offsetY: 0,
+                width: width / 2.5,
                 height: height
             }, {
-                width: width,
+                offsetX: 14,
+                offsetY: 0,
+                width: width / 1.5,
                 height: height / 2.5
             });
         }
@@ -203,7 +221,7 @@ function player_render_hitbox() {
         ctx.beginPath();
         ctx.strokeStyle = "red";
         ctx.lineWidth = 1;
-        ctx.rect(player.pos.x, player.pos.y, box.width, box.height);
+        ctx.rect(player.pos.x + box.offsetX, player.pos.y + box.offsetY, box.width, box.height);
         ctx.stroke();
     }
 }

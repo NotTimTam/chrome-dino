@@ -44,12 +44,13 @@ function tick() {
             canTick = false;
 
             canvas_clear();
-            ground.render();
-            player.tick();
 
-            obstacles.tick();
+            ground.render();
+            obstacles.render();
+            player.render();
 
             player_render_hitbox(); // for debugging.
+            
 
             canTick = true;
         }
@@ -57,4 +58,4 @@ function tick() {
         return;
     }
 }
-window.setInterval(tick, 16.7); // 16.7 is 60fps
+window.setInterval(tick, 1); // 16.7 is 60fps

@@ -44,7 +44,6 @@ let ground = {
     }
 };
 ground.load_image('../images/ground_1.png');
-window.setInterval(ground.tick, 16.7);
 
 function ground_reset_pos(offset = 28) {
     ground.step1.y = Math.round(screenHeight - 16);
@@ -59,6 +58,13 @@ let obstacles = {
         for (let objectID in obstacles.objects) {
             let object = obstacles.objects[objectID];
             object.tick();
+        }
+    },
+
+    render: () => {
+        for (let objectID in obstacles.objects) {
+            let object = obstacles.objects[objectID];
+            object.render();
         }
     }
 };
@@ -96,13 +102,16 @@ class Cactus {
     }
 
     tick() {
-        canvas_draw_image(this.image, this.x, this.y);
-
         this.x -= ground.speed;
 
         if (this.x + this.width < 0) {
             obstacles.objects.splice(obstacles.objects.indexOf(this), 1);
         }
+    }
+
+    render() {
+        canvas_draw_image(this.image, this.x, this.y);
+        object_render_hitbox(this);
     }
 
     calculate_hitbox() {        
@@ -195,3 +204,19 @@ class Ptero {
         }
     }
 }
+
+function object_render_hitbox(object) {
+    for (let key in object.hitbox) {
+        let box = object.hitbox[key];
+        ctx.beginPath();
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 1;
+        ctx.rect(object.pos.x + box.offsetX, object.pos.y + box.offsetY, box.width, box.height);
+        ctx.stroke();
+    }
+}
+
+
+
+window.setInterval(ground.tick, 16.7);
+window.setInterval(obstacles.tick, 16.7);

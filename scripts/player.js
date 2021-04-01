@@ -143,7 +143,7 @@ let player = {
     },
 
     // runs every frame.
-    tick: () => {
+    render: () => {
         player.set_animation();
 
         let frame = player.get_frame();

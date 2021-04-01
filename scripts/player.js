@@ -1,7 +1,9 @@
 "use strict";
-// (╯°□°)╯︵ ┻━┻
+
 // player data.
 let player = {
+    health: 1,
+    xDistance: 0,
 
     jump: {
         speed: 1,
@@ -38,12 +40,7 @@ let player = {
                 "../images/die_1.png",
             ]
         },
-        images: {
-            stand: [],
-            run: [],
-            duck: [],
-            die: []
-        }
+        images: { stand: [], run: [], duck: [], die: [] }
     },
 
     pos: {
@@ -53,18 +50,30 @@ let player = {
         y: Math.round(screenHeight - 47 - 5),
     },
 
-    hitbox: [
-        {
-            width: 44 / 1.5,
-            height: 47
-        }, {
-            width: 44,
-            height: 47 / 2.5
-        }
-    ],
+    hitbox: [ { width: 44 / 1.5, height: 47 }, { width: 44, height: 47 / 2.5 } ],
 
-    events: function () {
+    // load all the frame images for the player.
+    load_images: () => {
+            for (let sourceList in player.anim.sources) {
+            let currentSourceList = player.anim.sources[sourceList];
+
+            for (let source in currentSourceList) {
+                let currentSource = currentSourceList[source];
+
+                let image = new Image();
+                image.src = currentSource;
+
+                player.anim.images[sourceList][source] = image;
+            }
+        }
+
+        player.calculate_hitbox();
+    },
+
+    // handles inputs and movement.
+    events: () => {
         window.addEventListener( "keydown", ( e ) => {
+            // If the plyer is not jumping and the key being pressed is space or the up arrow
             if ( !player.jump.active && ( e.key === " " || e.key === "ArrowUp" ) ) {
                 let x = 0;
                 player.buttons.up = true;
@@ -81,6 +90,7 @@ let player = {
                     }
                 }, player.jump.speed )
             } else if ( player.jump.active && e.key === "ArrowDown" ) {
+                console.log("hit")
                 let id2 = setInterval( () => {
                     if ( player.pos.y >= Math.round( screenHeight - player.pos.height - 5) ) {
                         clearInterval( id2 )
@@ -89,79 +99,104 @@ let player = {
                     }
                 }, player.jump.speed )
             } else if ( e.key === "ArrowDown" ) {
+
+                player.pos.height = 30;
+                player.pos.y = Math.round(screenHeight - player.pos.height - 5);
                 player.buttons.down = true;
-                player.pos.width = 5
-                player.pos.height = 17
-            }
+                
+            } else {}
         } )
 
         window.addEventListener("keyup", () => {
             player.buttons.down = false;
+            if (!player.jump.active) {
+                player.pos.height = 47;
+                player.pos.y = Math.round(screenHeight - player.pos.height - 5);
+            }
         })
     },
 
-    health: 1,
-    xDistance: 0
+    // get the current frame.
+    get_frame: () => {
+        return player.anim.images[player.anim.currentAnim][player.anim.frame];
+    },
+
+    // move to the next frame.
+    increase_frame: () => {
+        player.anim.frame ++;
+
+        if (player.anim.frame >= player.anim.images[player.anim.currentAnim].length) {
+            player.anim.frame = 0;
+        }
+    },
+
+    // runs every frame.
+    tick: () => {
+        player.set_animation();
+
+        let frame = player.get_frame();
+
+        canvas_draw_image(frame, player.pos.x, player.pos.y)
+    },
+
+    // set the player's animation based on the current action.
+    set_animation: () => {
+        let tempAnim = "null";
+
+        if (player.jump.active || (ground.speed == 0 && !player.buttons.down)) {
+            tempAnim = "stand";
+        } else if (!player.jump.active && !player.buttons.down) {
+            tempAnim = "run";
+        } else if (!player.jump.active && player.buttons.down) {
+            tempAnim = "duck";
+        } else {
+            tempAnim = "stand";
+        }
+
+        if (tempAnim != player.anim.currentAnim) {
+            player.anim.currentAnim = tempAnim;
+            player.anim.frame = 0;
+            player.calculate_hitbox();
+        }
+    },
+
+    // generate a hitbox for the player based on the frame/image of the current animation.
+    calculate_hitbox: () => {
+        let width = player.anim.images[player.anim.currentAnim][player.anim.frame].width;
+        let height = player.anim.images[player.anim.currentAnim][player.anim.frame].height;
+
+        player.pos.width = width;
+        player.pos.height = height;
+
+        player.hitbox = [];
+
+        if (player.anim.currentAnim == "duck") {
+            player.hitbox.push({
+                width: width,
+                height: height
+            });
+        } else {
+            player.hitbox.push({
+                width: width / 1.5,
+                height: height
+            }, {
+                width: width,
+                height: height / 2.5
+            });
+        }
+    }
 };
 
-// now this right here is a jerry-rig if I ever did see one.
+// now THIS RIGHT HERE is the jankiest, buggiest, most ridiculously processor-intensive jerry-rig I ever did see.
 window.setTimeout(() => { player.jump.active = true; }, 100);
 window.setTimeout(() => { player.jump.active = false; }, 250);
 
 player.events();
 
 // begin animating the player.
-let player_animate_loop = setInterval(player_increase_frame, 1000 / player.anim.speed);
+let player_animate_loop = setInterval(player.increase_frame, 1000 / player.anim.speed);
 
-// change the player's animation.
-function player_set_animation() {
-    let tempAnim = "null";
-
-    if (player.jump.active || (ground.speed == 0 && !player.buttons.down)) {
-        tempAnim = "stand";
-    } else if (!player.jump.active && !player.buttons.down) {
-        tempAnim = "run";
-    } else if (!player.jump.active && player.buttons.down) {
-        tempAnim = "duck";
-    } else {
-        tempAnim = "stand";
-    }
-
-    if (tempAnim != player.anim.currentAnim) {
-        player.anim.currentAnim = tempAnim;
-        player.anim.frame = 0;
-        player_calculate_hitbox();
-    }
-}
-
-// calculate the player's hitbox.
-function player_calculate_hitbox() {
-    let width = player.anim.images[player.anim.currentAnim][player.anim.frame].width;
-    let height = player.anim.images[player.anim.currentAnim][player.anim.frame].height;
-
-    player.pos.width = width;
-    player.pos.height = height;
-
-    player.hitbox = [];
-
-    if (player.anim.currentAnim == "duck") {
-        player.hitbox.push({
-            width: width,
-            height: height
-        });
-    } else {
-        player.hitbox.push({
-            width: width / 1.5,
-            height: height
-        }, {
-            width: width,
-            height: height / 2.5
-        });
-    }
-
-}
-
-// render the player's hitbox.
+// render the player's hitbox. (debugging only)
 function player_render_hitbox() {
     for (let key in player.hitbox) {
         let box = player.hitbox[key];
@@ -171,45 +206,4 @@ function player_render_hitbox() {
         ctx.rect(player.pos.x, player.pos.y, box.width, box.height);
         ctx.stroke();
     }
-}
-
-// animate the player's frame.
-function player_increase_frame() {
-    player.anim.frame ++;
-
-    if (player.anim.frame >= player.anim.images[player.anim.currentAnim].length) {
-        player.anim.frame = 0;
-    }
-}
-
-// load the player's frames.
-function player_load_images() {
-    for (let sourceList in player.anim.sources) {
-        let currentSourceList = player.anim.sources[sourceList];
-
-        for (let source in currentSourceList) {
-            let currentSource = currentSourceList[source];
-
-            let image = new Image();
-            image.src = currentSource;
-
-            player.anim.images[sourceList][source] = image;
-        }
-    }
-
-    player_calculate_hitbox();
-};
-
-// get the current animation frame from the player.
-function player_get_frame() {
-    return player.anim.images[player.anim.currentAnim][player.anim.frame];
-}
-
-// draw frame.
-function player_tick() {
-    player_set_animation();
-
-    let frame = player_get_frame();
-
-    canvas_draw_image(frame, player.pos.x, player.pos.y);
 }

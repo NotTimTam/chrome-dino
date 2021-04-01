@@ -1,20 +1,46 @@
 "use strict";
 
-let cactusImages = [
-    "/images/cactus_1.png",
-    "/images/cactus_2.png",
-    "/images/cactus_3.png",
-    "/images/cactus_group_1.png",
-    "/images/cactus_group_2.png",
-]
+// obstacles.
+let obstacles = {
+    objects: [],
 
+    tick: () => {
+        for (let objectID in obstacles.objects) {
+            let object = obstacles.objects[objectID];
+            object.tick();
+        }
+    }
+};
+
+window.setInterval(function () {
+    let cacti = new Cactus(Math.random() * screenWidth, Math.random() * screenHeight);
+}, 1000);
+
+// cactus.
 class Cactus {
     constructor(x, y) {
         this.x = x;
         this.y = y;
         this.speed = ground.speed;
 
-        this.sprite = cactusImages[Math.floor( Math.random * 5)]
+        this.sources = [
+            "/images/cactus_1.png",
+            "/images/cactus_2.png",
+            "/images/cactus_3.png",
+            "/images/cactus_group_1.png",
+            "/images/cactus_group_2.png",
+        ];
+
+        // create an image for the cactus
+        this.sprite = this.sources[Math.floor(Math.random() * this.sources.length)];
+        this.image = new Image();
+        this.image.src = this.sprite;
+
+        obstacles.objects.push(this);
+    }
+
+    tick() {
+        canvas_draw_image(this.image, this.x, this.y);
     }
 }
 

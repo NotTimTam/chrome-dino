@@ -23,7 +23,7 @@ function canvas_clear() {
 
 // load all animation frames.
 function canvas_load_frames() {
-    player_load_images();
+    player.load_images();
 }
 canvas_load_frames();
 
@@ -45,7 +45,9 @@ function tick() {
 
             canvas_clear();
             ground_draw_frame();
-            player_tick();
+            player.tick();
+
+            obstacles.tick();
 
             player_render_hitbox(); // for debugging.
 

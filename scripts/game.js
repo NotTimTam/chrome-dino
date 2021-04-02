@@ -2,7 +2,7 @@
 
 // Ground
 let ground = {
-    speed: 5,
+    speed: 2,
     image: undefined,
 
     step1: {
@@ -23,11 +23,9 @@ let ground = {
     },
 
     tick: () => {
-        for (let i = 0; i <= ground.speed; i += ground.speed / 100) {
-            ground.step1.x -= ground.speed / 100;
-            ground.step2.x -= ground.speed / 100;
-        }
-
+        ground.step1.x -= ground.speed;
+        ground.step2.x -= ground.speed;
+    
         if (ground.step1.x + 1200 <= 0) {
             ground.step1.x = 1200;
         }
@@ -36,8 +34,8 @@ let ground = {
             ground.step2.x = 1200;
         }
 
-        ground.step1.x = ground.step1.x;
-        ground.step2.x = ground.step2.x;
+        ground.step1.x = Math.round(ground.step1.x);
+        ground.step2.x = Math.round(ground.step2.x);
     },
 
     render: () => {
@@ -68,7 +66,7 @@ let obstacles = {
             let object = obstacles.objects[objectID];
             object.render();
 
-            object_render_hitbox(object);
+            // object_render_hitbox(object);
         }
     }
 };
@@ -97,9 +95,7 @@ class Cactus {
         this.image.onload = function () {
             self.width = self.image.width;
             self.height = self.image.height;
-
-            console.log([self.image.width, self.image.height]);
-
+            
             self.x = screenWidth;
             self.y = Math.round((screenHeight - self.height) - 5);
             self.speed = ground.speed;
@@ -113,9 +109,9 @@ class Cactus {
     }
 
     tick() {
-        for (let i = 0; i <= ground.speed; i += ground.speed / 16) {
-            this.x -= ground.speed / 16;
-        }
+        this.x -= ground.speed;
+
+        this.x = Math.round(this.x);
 
         if (this.x + this.width < 0) {
             obstacles.objects.splice(obstacles.objects.indexOf(this), 1);
@@ -232,7 +228,16 @@ function object_render_hitbox(object) {
     }
 }
 
+// end the game.
+function end_game() {
+    player.anim.currentAnim = "dead";
 
+    window.setTimeout(function () {
+        for (var i = 0; i < 999; i++) {
+            window.clearInterval(i);
+        }
+    }, 50);
+}
 
-window.setInterval(ground.tick, 16.7);
-window.setInterval(obstacles.tick, 16.7);
+window.setInterval(ground.tick, 1);
+window.setInterval(obstacles.tick, 1);

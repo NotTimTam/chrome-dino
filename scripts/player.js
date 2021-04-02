@@ -1,8 +1,10 @@
 "use strict";
 
+let jumpSound = new Audio("../audio/jump.mp3")
+
 // player data.
 let player = {
-    health: 1,
+    health: 5,
     xDistance: 0,
     inTouch: false,
     lastTouchCheck: false,
@@ -38,11 +40,11 @@ let player = {
                 "../images/duck_1.png",
                 "../images/duck_2.png",
             ],
-            die: [
+            dead: [
                 "../images/die_1.png",
             ]
         },
-        images: { stand: [], run: [], duck: [], die: [] }
+        images: { stand: [], run: [], duck: [], dead: [] }
     },
 
     pos: {
@@ -67,6 +69,30 @@ let player = {
         }
     ],
 
+    // take damage
+    take_damage: () => {
+        if (player.inTouch && player.lastTouchCheck != player.inTouch) {
+            player.health -= 1;
+            document.getElementById("health").innerHTML = "";
+
+            canvas.classList.add("shake_animation");
+
+            window.setTimeout(function () {
+                canvas.classList.remove("shake_animation");
+            }, 500);
+
+            for (let i = 1; i <= player.health; i++) {
+                document.getElementById("health").innerHTML += `<img src="/images/heart.png" alt="heart">`;
+            }
+        }
+
+        player.lastTouchCheck = player.inTouch;
+
+        if (player.health <= 0) {
+            end_game();
+        }
+    },
+
     // load all the frame images for the player.
     load_images: () => {
         for (let sourceList in player.anim.sources) {
@@ -90,9 +116,11 @@ let player = {
         window.addEventListener("keydown", (e) => {
             // If the plyer is not jumping and the key being pressed is space or the up arrow
             if (!player.jump.active && (e.key === " " || e.key === "ArrowUp") && !player.buttons.down) {
-                let x = 0;
+                jumpSound.play()
+
+                let x = 0; // Tracks the temporary player x position for the quadratic curve
                 player.buttons.up = true;
-                player.jump.active = true;
+                player.jump.active = true; // Sets it so the player is currently jumping
                 let id = setInterval(() => {
                     if (player.pos.y > Math.round(screenHeight - player.pos.height - 5)) {
                         player.pos.y = Math.round(screenHeight - player.pos.height - 5);
@@ -151,6 +179,8 @@ let player = {
         } else {
             player.inTouch = false;
         }
+
+        player.take_damage();
 
         player.set_animation();
 
@@ -257,6 +287,11 @@ window.setTimeout(() => { player.jump.active = true; }, 100);
 window.setTimeout(() => { player.jump.active = false; }, 250);
 
 player.events();
+
+// Resets the players position if the window is resized 
+function player_reset_pos () {
+    player.pos.y = Math.round(screenHeight - player.pos.height - 5);
+}
 
 // begin animating the player.
 let player_animate_loop = setInterval(player.increase_frame, 1000 / player.anim.speed);

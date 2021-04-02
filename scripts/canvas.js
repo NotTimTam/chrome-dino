@@ -12,6 +12,8 @@ function canvas_fix_resolution() {
 
     // reset object positioning on the canvas.
     ground_reset_pos();
+    player_reset_pos();
+    
 }
 canvas_fix_resolution();
 window.addEventListener("resize", canvas_fix_resolution);
@@ -35,6 +37,7 @@ function canvas_draw_image(image, x, y) {
 // tick function.
 let canTick = true;
 let paused = false;
+
 function tick() {
     if (!paused) {
         player.xDistance += 0.18; // POINT EIGHTEEN POINT EIGHTEEN
@@ -49,7 +52,7 @@ function tick() {
             obstacles.render();
             player.render();
 
-            player_render_hitbox(); // for debugging. 
+            // player_render_hitbox(); // for debugging. 
 
             canTick = true;
         }
@@ -57,4 +60,4 @@ function tick() {
         return;
     }
 }
-window.setInterval(tick, 1); // 16.7 is 60fps
+window.setInterval(tick, 16.7); // 16.7 is 60fps

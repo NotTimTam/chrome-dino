@@ -25,7 +25,7 @@ let ground = {
     tick: () => {
         ground.step1.x -= ground.speed;
         ground.step2.x -= ground.speed;
-    
+
         if (ground.step1.x + 1200 <= 0) {
             ground.step1.x = 1200;
         }
@@ -95,7 +95,7 @@ class Cactus {
         this.image.onload = function () {
             self.width = self.image.width;
             self.height = self.image.height;
-            
+
             self.x = screenWidth;
             self.y = Math.round((screenHeight - self.height) - 5);
             self.speed = ground.speed;
@@ -122,7 +122,7 @@ class Cactus {
         canvas_draw_image(this.image, this.x, this.y);
     }
 
-    calculate_hitbox() {        
+    calculate_hitbox() {
         let width = this.image.width;
         let height = this.image.height;
 
@@ -175,16 +175,18 @@ class Cactus {
 
     }
 }
-window.setInterval(function () {
-    let cacti = new Cactus();
-}, 1500);
 
 // pterodactyl.
 class Ptero {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        this.pos = {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+        }
         this.speed = 2;
+        this.hitbox = [];
 
         this.anim = {
             speed: 10,
@@ -196,6 +198,9 @@ class Ptero {
             ]
         };
 
+        let self = this;
+
+        obstacles.objects.push(self);
         this.animate = setInterval(this.frame, 1000 / this.speed);
     }
 
@@ -214,6 +219,37 @@ class Ptero {
         for (let i = 0; i < this.speed; i += this.speed / 16) {
             this.x -= this.speed / 16;
         }
+    }
+
+    tick() {
+        this.pos.x -= ground.speed / this.speed;
+
+        this.pos.x = Math.round(this.pos.x);
+
+        if (this.pos.x + this.width < 0) {
+            obstacles.objects.splice(obstacles.objects.indexOf(this), 1);
+        }
+    }
+
+    calculate_hitbox() {
+        let width = this.anim.images[this.anim.currentAnim][this.anim.frame].width;
+        let height = this.anim.images[this.anim.currentAnim][this.anim.frame].height;
+
+        this.pos.width = width;
+        this.pos.height = height;
+
+        this.hitbox = [{
+            offsetX: 0,
+            offsetY: 0,
+            width: width,
+            height: height
+        }];
+    }
+
+    render () {
+        let frame = this.get_frame();
+
+        canvas_draw_image(frame, this.pos.x, this.pos.y);
     }
 }
 
@@ -241,3 +277,20 @@ function end_game() {
 
 window.setInterval(ground.tick, 1);
 window.setInterval(obstacles.tick, 1);
+
+function spawnBaddy() {
+    let random = Math.ceil(Math.random() * 2);
+
+    if (random == 1) {
+        let cacti = new Cactus();
+    } else {
+        if (player.xDistance >= 100) {
+            // let ptero = new Ptero();
+        } else {
+            let cacti = new Cactus();
+        }
+    }
+
+    window.setTimeout(spawnBaddy, (Math.random() * (1.5 - 0.95) + 0.95).toFixed(4) * 1000);
+}
+window.setTimeout(spawnBaddy, 2000);

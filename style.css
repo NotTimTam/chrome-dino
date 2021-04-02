@@ -16,14 +16,8 @@ canvas {
     width: 100vw;
     height: 100vh;
 
-    position: absolute;
-    top: 0;
-    left: 0;
-
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-
-    
 }
 
 .shake_animation {
@@ -55,5 +49,5 @@ canvas {
 
 #health * {
     margin: 5px;
-    width: 5vw;
+    width: 3vw;
 }

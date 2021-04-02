@@ -282,7 +282,7 @@ let player = {
     }
 };
 
-// now THIS RIGHT HERE is the jankiest, buggiest, most ridiculously processor-intensive jerry-rig I ever did see.
+// now THIS RIGHT HERE is the jankiest, buggiest, most ridiculously processor-intensive jerry-rig I ever did see. - Dundee the crocidile
 window.setTimeout(() => { player.jump.active = true; }, 100);
 window.setTimeout(() => { player.jump.active = false; }, 250);
 

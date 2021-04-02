@@ -13,7 +13,6 @@ function canvas_fix_resolution() {
     // reset object positioning on the canvas.
     ground_reset_pos();
     player_reset_pos();
-    
 }
 canvas_fix_resolution();
 window.addEventListener("resize", canvas_fix_resolution);

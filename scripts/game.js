@@ -66,7 +66,7 @@ let obstacles = {
             let object = obstacles.objects[objectID];
             object.render();
 
-            // object_render_hitbox(object);
+            object_render_hitbox(object);
         }
     }
 };
@@ -78,11 +78,11 @@ class Cactus {
         this.height;
 
         this.sources = [
-            "/images/cactus_1.png",
-            "/images/cactus_2.png",
-            "/images/cactus_3.png",
-            "/images/cactus_group_1.png",
-            "/images/cactus_group_2.png",
+            "../images/cactus_1.png",
+            "../images/cactus_2.png",
+            "../images/cactus_3.png",
+            "../images/cactus_group_1.png",
+            "../images/cactus_group_2.png",
         ];
 
         // create an image for the cactus
@@ -130,7 +130,7 @@ class Cactus {
         this.height = height;
 
         switch (this.sprite) {
-            case "/images/cactus_1.png":
+            case "../images/cactus_1.png":
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 5,
@@ -138,7 +138,7 @@ class Cactus {
                     height: height - 5
                 });
                 break;
-            case "/images/cactus_2.png":
+            case "../images/cactus_2.png":
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 5,
@@ -146,7 +146,7 @@ class Cactus {
                     height: height - 5
                 });
                 break;
-            case "/images/cactus_3.png":
+            case "../images/cactus_3.png":
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 5,
@@ -154,7 +154,7 @@ class Cactus {
                     height: height - 5
                 });
                 break;
-            case "/images/cactus_group_1.png":
+            case "../images/cactus_group_1.png":
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 0,
@@ -162,7 +162,7 @@ class Cactus {
                     height: height
                 });
                 break;
-            case "/images/cactus_group_2.png":
+            case "../images/cactus_group_2.png":
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 0,
@@ -179,12 +179,11 @@ class Cactus {
 // pterodactyl.
 class Ptero {
     constructor(x, y) {
-        this.pos = {
-            x: 0,
-            y: 0,
-            width: 0,
-            height: 0
-        }
+        this.width = 0,
+        this.height = 0,
+        this.x = screenWidth,
+        this.y = Math.round((screenHeight - this.height) - 50),
+
         this.speed = 2;
         this.hitbox = [];
 
@@ -192,27 +191,31 @@ class Ptero {
             speed: 10,
             frame: 0,
             currentAnim: "fly",
-            fly: [
-                "/images/pt_1.png",
-                "/images/pt_2.png"
-            ]
+            sources: {
+                fly: [
+                    "../images/pt_1.png",
+                    "../images/pt_2.png"
+                ]
+            },
+            images: { fly: [] }
         };
 
-        let self = this;
+        obstacles.objects.push(this);
+        this.load_images();
 
-        obstacles.objects.push(self);
-        this.animate = setInterval(this.frame, 1000 / this.speed);
+        
+        this.animate = setInterval(this.increase_frame.bind(this), 1000 / this.speed);
     }
 
-    frame() {
+    increase_frame () {
         this.anim.frame++;
-        if (this.anim.frame > 1) {
+        if (this.anim.frame >= this.anim.images[this.anim.currentAnim].length) {
             this.anim.frame = 0;
         }
     }
 
     get_frame() {
-        return this.anim[currentAnim][this.anim.frame];
+        return this.anim.images[this.anim.currentAnim][this.anim.frame];
     }
 
     update() {
@@ -222,34 +225,52 @@ class Ptero {
     }
 
     tick() {
-        this.pos.x -= ground.speed / this.speed;
+        this.x -= ground.speed / this.speed;
 
-        this.pos.x = Math.round(this.pos.x);
+        this.x = Math.round(this.x);
 
-        if (this.pos.x + this.width < 0) {
+        if (this.x + this.width < 0) {
             obstacles.objects.splice(obstacles.objects.indexOf(this), 1);
         }
+    }
+
+    load_images () {
+        for (let sourceList in this.anim.sources) {
+            let currentSourceList = this.anim.sources[sourceList];
+
+            for (let source in currentSourceList) {
+                let currentSource = currentSourceList[source];
+
+                let image = new Image();
+                image.src = currentSource;
+
+                this.anim.images[sourceList].push(image)
+            }
+        }
+        this.calculate_hitbox();
     }
 
     calculate_hitbox() {
         let width = this.anim.images[this.anim.currentAnim][this.anim.frame].width;
         let height = this.anim.images[this.anim.currentAnim][this.anim.frame].height;
 
-        this.pos.width = width;
-        this.pos.height = height;
+        this.width = width;
+        this.height = height;
 
-        this.hitbox = [{
-            offsetX: 0,
-            offsetY: 0,
-            width: width,
-            height: height
-        }];
+        this.hitbox = [];
+
+        this.hitbox.push({
+            offsetX: 10,
+            offsetY: 10,
+            width: width - 20,
+            height: height - 20
+        })
     }
 
-    render () {
+    render() {
         let frame = this.get_frame();
-
-        canvas_draw_image(frame, this.pos.x, this.pos.y);
+        canvas_draw_image(this.anim.images[this.anim.currentAnim][this.anim.frame], this.x, this.y);
+        object_render_hitbox(this)
     }
 }
 
@@ -285,7 +306,7 @@ function spawnBaddy() {
         let cacti = new Cactus();
     } else {
         if (player.xDistance >= 100) {
-            // let ptero = new Ptero();
+            let ptero = new Ptero();
         } else {
             let cacti = new Cactus();
         }

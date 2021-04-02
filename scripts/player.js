@@ -1,7 +1,5 @@
 "use strict";
 
-let jumpSound = new Audio("../audio/jump.mp3")
-
 // player data.
 let player = {
     health: 5,
@@ -97,7 +95,7 @@ let player = {
     load_images: () => {
         for (let sourceList in player.anim.sources) {
             let currentSourceList = player.anim.sources[sourceList];
-
+ 
             for (let source in currentSourceList) {
                 let currentSource = currentSourceList[source];
 
@@ -116,7 +114,6 @@ let player = {
         window.addEventListener("keydown", (e) => {
             // If the plyer is not jumping and the key being pressed is space or the up arrow
             if (!player.jump.active && (e.key === " " || e.key === "ArrowUp") && !player.buttons.down) {
-                jumpSound.play()
 
                 let x = 0; // Tracks the temporary player x position for the quadratic curve
                 player.buttons.up = true;
@@ -234,11 +231,11 @@ let player = {
                 width: width / 2.5,
                 height: height
             }, {
-                    offsetX: 14,
-                    offsetY: 0,
-                    width: width / 1.5,
-                    height: height / 2.5
-                });
+                offsetX: 14,
+                offsetY: 0,
+                width: width / 1.5,
+                height: height / 2.5
+            });
         }
     },
 

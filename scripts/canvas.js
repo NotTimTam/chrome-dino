@@ -47,6 +47,7 @@ function tick() {
 
             canvas_clear();
 
+            obstacles.render_back();
             ground.render();
             obstacles.render();
             player.render();

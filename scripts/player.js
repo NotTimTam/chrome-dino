@@ -28,7 +28,7 @@ let player = {
         currentAnim: "stand",
         sources: {
             stand: [
-                "../images/stand_1.png",
+                `../images/stand_1.png`,
             ],
             run: [
                 "../images/run_1.png",

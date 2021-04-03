@@ -53,23 +53,83 @@ function ground_reset_pos(offset = 28) {
 // obstacles.
 let obstacles = {
     objects: [],
+    background_elems: [],
 
     tick: () => {
+        // tick foreground elements.
         for (let objectID in obstacles.objects) {
             let object = obstacles.objects[objectID];
             object.tick();
         }
     },
 
+    tick_back: () => {
+        // tick background elements.
+        for (let objectID in obstacles.background_elems) {
+            let object = obstacles.background_elems[objectID];
+            object.tick();
+        }
+    },
+
     render: () => {
+        // render obstacles.
         for (let objectID in obstacles.objects) {
             let object = obstacles.objects[objectID];
             object.render();
 
-            object_render_hitbox(object);
+            // Used for debugging
+            // object_render_hitbox(object);
+        }
+    },
+
+    render_back: () => {
+        // render background elements.
+        for (let objectID in obstacles.background_elems) {
+            let object = obstacles.background_elems[objectID];
+            object.render();
+        }
+    },
+};
+
+// background element.
+class Cloud {
+    constructor() {
+        this.width;
+        this.height;
+        this.speed = 1;
+
+        // create an image for the cactus
+        this.sprite = "../images/cloud_1.png";
+        this.image = new Image();
+        this.image.src = this.sprite;
+
+        let self = this;
+
+        this.image.onload = function () {
+            self.width = self.image.width;
+            self.height = self.image.height;
+
+            self.x = screenWidth + self.width;
+            self.y = Math.round(Math.random() * (screenHeight - self.height - 40));
+
+            obstacles.background_elems.push(self);
         }
     }
-};
+
+    tick() {
+        this.x -= this.speed;
+
+        this.x = Math.round(this.x);
+
+        if (this.x + this.width < 0) {
+            obstacles.background_elems.splice(obstacles.background_elems.indexOf(this), 1);
+        }
+    }
+
+    render() {
+        canvas_draw_image(this.image, this.x, this.y);
+    }
+}
 
 // cactus.
 class Cactus {
@@ -178,11 +238,11 @@ class Cactus {
 
 // pterodactyl.
 class Ptero {
-    constructor(x, y) {
+    constructor(y) {
         this.width = 0,
         this.height = 0,
         this.x = screenWidth,
-        this.y = Math.round((screenHeight - this.height) - 50),
+        this.y = y,
 
         this.speed = 2;
         this.hitbox = [];
@@ -199,10 +259,8 @@ class Ptero {
             },
             images: { fly: [] }
         };
-
         obstacles.objects.push(this);
         this.load_images();
-
         
         this.animate = setInterval(this.increase_frame.bind(this), 1000 / this.speed);
     }
@@ -219,9 +277,7 @@ class Ptero {
     }
 
     update() {
-        for (let i = 0; i < this.speed; i += this.speed / 16) {
-            this.x -= this.speed / 16;
-        }
+        this.x -= this.speed;
     }
 
     tick() {
@@ -240,7 +296,6 @@ class Ptero {
 
             for (let source in currentSourceList) {
                 let currentSource = currentSourceList[source];
-
                 let image = new Image();
                 image.src = currentSource;
 
@@ -253,6 +308,8 @@ class Ptero {
     calculate_hitbox() {
         let width = this.anim.images[this.anim.currentAnim][this.anim.frame].width;
         let height = this.anim.images[this.anim.currentAnim][this.anim.frame].height;
+        
+        console.log(width, height)
 
         this.width = width;
         this.height = height;
@@ -270,7 +327,6 @@ class Ptero {
     render() {
         let frame = this.get_frame();
         canvas_draw_image(this.anim.images[this.anim.currentAnim][this.anim.frame], this.x, this.y);
-        object_render_hitbox(this)
     }
 }
 
@@ -297,21 +353,49 @@ function end_game() {
 }
 
 window.setInterval(ground.tick, 1);
+window.setInterval(obstacles.tick_back, 1);
 window.setInterval(obstacles.tick, 1);
 
-function spawnBaddy() {
-    let random = Math.ceil(Math.random() * 2);
+// now THIS RIGHT HERE is the jankiest, buggiest, most ridiculously processor-intensive jerry-rig I ever did see.
+let endme = new Ptero();
+obstacles.objects.splice(obstacles.objects.indexOf(endme), 1);
+// no
 
-    if (random == 1) {
+let lastBaddy = "none";
+let pHeights = [
+    Math.round(screenHeight - 50),
+    Math.round(screenHeight - 75),
+    Math.round(screenHeight - 100),
+]
+function spawnBaddy() {
+    let random = Math.ceil(Math.random() * 5);
+
+    if (random != 1) {
         let cacti = new Cactus();
+        lastBaddy = "cactus";
     } else {
         if (player.xDistance >= 100) {
-            let ptero = new Ptero();
+            let height = pHeights[Math.floor(Math.random() * pHeights.length)];
+            console.log(height)
+            let ptero = new Ptero(height);
+            lastBaddy = "ptero";
         } else {
             let cacti = new Cactus();
+            lastBaddy = "cactus";
         }
     }
 
-    window.setTimeout(spawnBaddy, (Math.random() * (1.5 - 0.95) + 0.95).toFixed(4) * 1000);
+    if (lastBaddy == "cactus") {
+        window.setTimeout(spawnBaddy, (Math.random() * (1.5 - 0.95) + 0.95).toFixed(4) * 1000);
+    } else {
+        window.setTimeout(spawnBaddy, (Math.random() * (3 - 2) + 2).toFixed(4) * 1000);
+    }
 }
 window.setTimeout(spawnBaddy, 2000);
+
+function spawnBackgroundElem() {
+    let cloud = new Cloud();
+
+    window.setTimeout(spawnBackgroundElem, (Math.random() * (1 - 0.5) + 0.5).toFixed(4) * 1000);
+}
+spawnBackgroundElem();

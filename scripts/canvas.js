@@ -36,14 +36,22 @@ function canvas_draw_image(image, x, y) {
 // tick function.
 let canTick = true;
 let paused = false;
+let nextLevelDist = 100;
 
 function tick() {
     if (!paused) {
         player.xDistance += 0.18; // POINT EIGHTEEN POINT EIGHTEEN
         document.getElementById("distance").innerText = Math.round(player.xDistance);
 
+        // lots of really simple but complicated-looking math
+        document.getElementById("progress-head").style.marginLeft =
+            (player.xDistance / nextLevelDist) * document.getElementById("progress").offsetWidth - document.getElementById("progress-head").offsetWidth + 'px'
+
         if (canTick) {
             canTick = false;
+            if (player.xDistance >= nextLevelDist) {
+                paused = true;
+            }
 
             canvas_clear();
 

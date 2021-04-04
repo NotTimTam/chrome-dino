@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrome Dino</title>
+
+    <link rel="stylesheet" href="styles/game.css">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div class="player-info">
+        <div id="health">
+            <img src="/images/heart.png" alt="heart">
+            <img src="/images/heart.png" alt="heart">
+            <img src="/images/heart.png" alt="heart">
+            <img src="/images/heart.png" alt="heart">
+            <img src="/images/heart.png" alt="heart">
+        </div>
+        <div id="progress">
+            <img src="images/head_1.png" alt="head" id="progress-head">
+        </div>
+        <p id="distance">(╯ಠ益ಠ)╯︵ ┻━┻ ... NOW LOADING</p>
+    </div>
+    
+
+    <script>
+        // screen dimensions that factor the device pixel ratio.
+        function screen_fix_size() {
+            screenWidth = (window.devicePixelRatio * canvas.clientWidth) / 4;
+            screenHeight = (window.devicePixelRatio * canvas.clientHeight) / 4;
+        }
+
+        let screenHeight;
+        let screenWidth;
+
+        screen_fix_size();
+    </script>
+
+    <script src="scripts/player.js"></script>
+    <script src="scripts/game.js"></script>
+    <script src="scripts/canvas.js"></script>
+</body>
+</html>

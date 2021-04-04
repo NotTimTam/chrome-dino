@@ -70,7 +70,7 @@ let player = {
     // take damage
     take_damage: () => {
         if (player.inTouch && player.lastTouchCheck != player.inTouch) {
-            player.health -= 1;
+            player.health--;
             document.getElementById("health").innerHTML = "";
 
             canvas.classList.add("shake_animation");

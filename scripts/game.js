@@ -308,8 +308,6 @@ class Ptero {
     calculate_hitbox() {
         let width = this.anim.images[this.anim.currentAnim][this.anim.frame].width;
         let height = this.anim.images[this.anim.currentAnim][this.anim.frame].height;
-        
-        console.log(width, height)
 
         this.width = width;
         this.height = height;
@@ -359,7 +357,6 @@ window.setInterval(obstacles.tick, 1);
 // now THIS RIGHT HERE is the jankiest, buggiest, most ridiculously processor-intensive jerry-rig I ever did see.
 let endme = new Ptero();
 obstacles.objects.splice(obstacles.objects.indexOf(endme), 1);
-// no
 
 let lastBaddy = "none";
 let pHeights = [
@@ -376,7 +373,6 @@ function spawnBaddy() {
     } else {
         if (player.xDistance >= 100) {
             let height = pHeights[Math.floor(Math.random() * pHeights.length)];
-            console.log(height)
             let ptero = new Ptero(height);
             lastBaddy = "ptero";
         } else {

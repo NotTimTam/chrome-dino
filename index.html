@@ -1,39 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrome Dino</title>
-
-    <link rel="stylesheet" href="style.css">
+    <meta charset='UTF-8'>
+    <meta name='author' content='Ethan Philpott and Timothy Philips'>
+    <meta name='description' content='[A short description]'>
+    <title>FBLA DinoDash</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <canvas id="canvas"></canvas>
+    <header>
+        <img src="../images/fbla.png">
+        <h1>Dino Dash</h1>
+    </header>
 
-    <p style="position: absolute; top: 15px; right: 15px" id="distance">(╯ಠ益ಠ)╯︵ ┻━┻ ... NOW LOADING</p>
-    <div id="health">
-        <img src="/images/heart.png" alt="heart">
-        <img src="/images/heart.png" alt="heart">
-        <img src="/images/heart.png" alt="heart">
-        <img src="/images/heart.png" alt="heart">
-        <img src="/images/heart.png" alt="heart">
-    </div>
+    <main>
+        <div style="width: 15vw;"></div>
+        <img class="cloud cloud-1" src="images/cloud_1.png">
+        <img class="cloud cloud-2" src="images/cloud_1.png">
+        <div class="skin-select">
+            <div class="arrow arrow-left">
+                <div class="skybound"></div>
+                <div class="groundbound"></div>
+            </div>
+            <img src="images/stand_1.png">
+            <div class="arrow arrow-right">
+                <div class="skybound"></div>
+                <div class="groundbound"></div>
+            </div>
+        </div>
+        <div class="help">
+            <p>Use the up arrow or the space bar to jump the dino over the incoming cacti. Use the down arrow in the air to fall faster or on the ground to duck under the pterodactyls. Reach the end of the level to unlock new skins for your Dino Dash!</p>
+        </div>
+    </main>
 
-    <script>
-        // screen dimensions that factor the device pixel ratio.
-        function screen_fix_size() {
-            screenWidth = (window.devicePixelRatio * canvas.clientWidth) / 4;
-            screenHeight = (window.devicePixelRatio * canvas.clientHeight) / 4;
-        }
-
-        let screenHeight;
-        let screenWidth;
-
-        screen_fix_size();
-    </script>
-
-    <script src="scripts/player.js"></script>
-    <script src="scripts/game.js"></script>
-    <script src="scripts/canvas.js"></script>
+    <footer>
+        <div class="on-ground">
+            <img src="images/cactus_1.png" class="cactus">
+            <img src="images/cactus_group_1.png" class="cactus">
+            <img src="images/cactus_2.png" class="cactus">
+            <a href="game.html">Play</a>
+            <img src="images/cactus_group_2.png" class="cactus">
+            <img src="images/pt_1.png" class="pt">
+            <img src="images/pt_2.png" class="pt">
+        </div>
+        <img src="images/ground_1.png" class="ground">
+    </footer>
 </body>
+
 </html>

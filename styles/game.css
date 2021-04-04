@@ -12,9 +12,14 @@
     font-size: 18px;
 }
 
+:root {
+    --base-color: #535353;
+    --text-color: #ffffff;
+}
+
 body {
     overflow: hidden;
-    background-color: white;
+    background-color: var(--text-color);
     display: grid;
 }
 
@@ -25,10 +30,11 @@ canvas {
     width: 100vw;
     height: 100vh;
 
+    /* What is this about? */
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 
-    background-color: white;
+    background-color: var(--text-color);
 }
 
 .shake_animation {
@@ -72,6 +78,7 @@ canvas {
 #distance {
     width: 20vw;
     text-align: right;
+    color: var(--base-color);
 }
 
 #progress {

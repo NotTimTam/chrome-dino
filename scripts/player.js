@@ -1,5 +1,9 @@
 "use strict";
 
+let skin = localStorage.getItem('currSkin');
+
+update_colors(skin);
+
 // player data.
 let player = {
     health: 5,
@@ -28,18 +32,18 @@ let player = {
         currentAnim: "stand",
         sources: {
             stand: [
-                `../images/stand_1.png`,
+                `../images/${skin}/stand_1_${skin}.png`,
             ],
             run: [
-                "../images/run_1.png",
-                "../images/run_2.png",
+                `../images/${skin}/run_1_${skin}.png`,
+                `../images/${skin}/run_2_${skin}.png`,
             ],
             duck: [
-                "../images/duck_1.png",
-                "../images/duck_2.png",
+                `../images/${skin}/duck_1_${skin}.png`,
+                `../images/${skin}/duck_2_${skin}.png`,
             ],
             dead: [
-                "../images/die_1.png",
+                `../images/${skin}/die_1_${skin}.png`,
             ]
         },
         images: { stand: [], run: [], duck: [], dead: [] }

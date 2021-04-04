@@ -43,7 +43,7 @@ let ground = {
         canvas_draw_image(ground.image, ground.step2.x, ground.step2.y);
     }
 };
-ground.load_image('../images/ground_1.png');
+ground.load_image(`../images/${skin}/ground_1_${skin}.png`);
 
 function ground_reset_pos(offset = 28) {
     ground.step1.y = Math.round(screenHeight - 16);
@@ -99,7 +99,7 @@ class Cloud {
         this.speed = 1;
 
         // create an image for the cactus
-        this.sprite = "../images/cloud_1.png";
+        this.sprite = `../images/${skin}/cloud_1_${skin}.png`;
         this.image = new Image();
         this.image.src = this.sprite;
 
@@ -138,11 +138,11 @@ class Cactus {
         this.height;
 
         this.sources = [
-            "../images/cactus_1.png",
-            "../images/cactus_2.png",
-            "../images/cactus_3.png",
-            "../images/cactus_group_1.png",
-            "../images/cactus_group_2.png",
+            `../images/${skin}/cactus_1_${skin}.png`,
+            `../images/${skin}/cactus_2_${skin}.png`,
+            `../images/${skin}/cactus_3_${skin}.png`,
+            `../images/${skin}/cactus_group_1_${skin}.png`,
+            `../images/${skin}/cactus_group_2_${skin}.png`,
         ];
 
         // create an image for the cactus
@@ -190,7 +190,7 @@ class Cactus {
         this.height = height;
 
         switch (this.sprite) {
-            case "../images/cactus_1.png":
+            case `../images/${skin}/cactus_1_${skin}.png`:
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 5,
@@ -198,7 +198,7 @@ class Cactus {
                     height: height - 5
                 });
                 break;
-            case "../images/cactus_2.png":
+            case `../images/${skin}/cactus_2_${skin}.png`:
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 5,
@@ -206,7 +206,7 @@ class Cactus {
                     height: height - 5
                 });
                 break;
-            case "../images/cactus_3.png":
+            case `../images/${skin}/cactus_3_${skin}.png`:
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 5,
@@ -214,7 +214,7 @@ class Cactus {
                     height: height - 5
                 });
                 break;
-            case "../images/cactus_group_1.png":
+            case `../images/${skin}/cactus_group_1_${skin}.png`:
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 0,
@@ -222,7 +222,7 @@ class Cactus {
                     height: height
                 });
                 break;
-            case "../images/cactus_group_2.png":
+            case `../images/${skin}/cactus_group_2_${skin}.png`:
                 this.hitbox.push({
                     offsetX: 5,
                     offsetY: 0,
@@ -253,8 +253,8 @@ class Ptero {
             currentAnim: "fly",
             sources: {
                 fly: [
-                    "../images/pt_1.png",
-                    "../images/pt_2.png"
+                    `../images/${skin}/pt_1_${skin}.png`,
+                    `../images/${skin}/pt_2_${skin}.png`
                 ]
             },
             images: { fly: [] }

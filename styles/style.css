@@ -9,8 +9,17 @@
     box-sizing: border-box;
 }
 
+:root {
+    --base-color: #535353;
+    --text-color: #ffffff;
+}
+
 img {
     image-rendering: pixelated;
+}
+
+body {
+    background-color: var(--text-color)
 }
 
 header {
@@ -34,7 +43,7 @@ header h1 {
     font-size: 4vw;
     font-family: "pixel";
     text-align: center;
-    color: #535353;
+    color: var(--base-color);
 }
 
 main {
@@ -61,12 +70,12 @@ main {
 
 main .highscores {
     font-family: "pixel";
-    color: white;
+    color: var(--text-color);
     font-size: .75vw;
     width: 17.5vw;
     height: 32.5vh;
     padding: 1vw;
-    background-color: #535353;
+    background-color: var(--base-color);
 }
 
 main .highscores h3 {
@@ -120,7 +129,7 @@ main .skin-select .arrow * {
     grid-column: 1/2;
     width: 3.5vw;
     height: 1vw;
-    background-color: #535353;
+    background-color: var(--base-color);
 }
 
 main .skin-select .arrow .skybound {
@@ -143,8 +152,8 @@ main .help {
     width: 17.5vw;
     height: 32.5vh;
     padding: 1vw;
-    background-color: #535353;
-    color: white;
+    background-color: var(--base-color);
+    color: var(--text-color);
     letter-spacing: 1px;
     word-spacing: 5px;
     text-align: justify;
@@ -183,11 +192,11 @@ footer .on-ground img.pt {
 
 footer a {
     padding: 1vw 2.5vw;
-    background-color: #535353;
+    background-color: var(--base-color);
     justify-self: flex-start;
     font-family: "pixel";
     font-size: 2vw;
-    color: white;
+    color: var(--text-color);
     text-decoration: none;
 }
 footer a:hover {

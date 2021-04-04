@@ -21,3 +21,4 @@ gamee
 - Double jump
 - Lazers
 - Divebombing pteros
+- Moon Shoes (aka. less gravity)

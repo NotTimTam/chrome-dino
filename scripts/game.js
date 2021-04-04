@@ -339,6 +339,7 @@ function object_render_hitbox(object) {
     }
 }
 
+let highscoresAlreadySet = false;
 // end the game.
 function end_game() {
     player.anim.currentAnim = "dead";
@@ -348,6 +349,11 @@ function end_game() {
             window.clearInterval(i);
         }
     }, 50);
+
+    if (!highscoresAlreadySet) {
+        highscores_set(Math.round(player.xDistance)); 
+        highscoresAlreadySet = true;
+    }
 }
 
 window.setInterval(ground.tick, 1);

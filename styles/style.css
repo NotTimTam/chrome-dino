@@ -55,8 +55,33 @@ main {
 }
 
 .cloud-2 {
-    top: 50vh;
+    top: 70vh;
     left: 10vw;
+}
+
+main .highscores {
+    font-family: "pixel";
+    color: white;
+    font-size: .75vw;
+    width: 17.5vw;
+    height: 32.5vh;
+    padding: 1vw;
+    background-color: #535353;
+}
+
+main .highscores h3 {
+    font-size: 1.5vw;
+    text-align: center;
+}
+
+main .highscores ol {
+    /* list-style: none; */
+    padding: 1vw 3vw;
+    font-size: 1vw;
+}
+
+main .highscores ol li {
+    padding: 0.125vw;
 }
 
 main .skin-select {

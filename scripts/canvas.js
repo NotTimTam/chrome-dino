@@ -36,7 +36,7 @@ function canvas_draw_image(image, x, y) {
 // tick function.
 let canTick = true;
 let paused = false;
-let nextLevelDist = 100;
+let nextLevelDist = 500;
 
 function tick() {
     if (!paused) {
@@ -50,7 +50,8 @@ function tick() {
         if (canTick) {
             canTick = false;
             if (player.xDistance >= nextLevelDist) {
-                paused = true;
+                end_game();
+                paused = true
             }
 
             canvas_clear();

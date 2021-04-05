@@ -40,7 +40,7 @@ let levels = {
                 speed: 1.75,
             },
             player: {
-                jumpInterval: 0.005,
+                jumpInterval: 0.0001,
             }
         }
     },
@@ -123,7 +123,7 @@ function level_set(level) {
                         dPath = dPath[pa];
                         if (cPath) cPath = cPath[pa];
                     }
-                    ground[path[path.length - 1]] = cPath ? cPath : dPath
+                    player[path[path.length - 1]] = cPath ? cPath : dPath
                 }
                 break;
             case "obstacles":
@@ -134,7 +134,7 @@ function level_set(level) {
                         dPath = dPath[pa];
                         if (cPath) cPath = cPath[pa];
                     }
-                    ground[path[path.length - 1]] = cPath ? cPath : dPath
+                    obstacles[path[path.length - 1]] = cPath ? cPath : dPath
                 }
                 break;
             default: break;

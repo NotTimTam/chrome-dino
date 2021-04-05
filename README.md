@@ -5,7 +5,6 @@ gamee
 - Add levels.
 - Minimum of THREE levels.
 - Add celebatory messages
-- hitboxes on the dino sometimes don't work
 
 ### If we have extra time:
 - Fix ground rendering (skip-place) bugs.

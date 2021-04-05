@@ -10,10 +10,6 @@ window.onload = function () {
 
 const leftArrow = document.getElementById("arrow-left")
 const rightArrow = document.getElementById("arrow-right")
-skins_add("dark");
-let skinsCarousell = skins_return();
-let currentSkinIndex = skinsCarousell.indexOf(currSkin_return());
-update_colors(skinsCarousell[currentSkinIndex]); 
 
 leftArrow.addEventListener("click", () => {
     switch_skin("left")
@@ -22,6 +18,14 @@ rightArrow.addEventListener("click", () => {
     switch_skin("right")
 })
 
+skins_add("dark");
+let skinsCarousell = skins_return();
+let currentSkinIndex = skinsCarousell.indexOf(currSkin_return());
+
+update_colors(skinsCarousell[currentSkinIndex]);
+update_skins(null) 
+
+
 function switch_skin(direction) {
     let pastIndex = currentSkinIndex;
     if (direction === "left") {
@@ -29,11 +33,14 @@ function switch_skin(direction) {
     } else if (direction === "right") {
         currentSkinIndex = currentSkinIndex + 1 > skinsCarousell.length - 1 ? 0 : currentSkinIndex + 1;
     }
-    currSkin_change(skinsCarousell[currentSkinIndex])
+    currSkin_change(skinsCarousell[currentSkinIndex]);
     update_colors(skinsCarousell[currentSkinIndex]);
+    update_skins(pastIndex);
+}
 
-    let arr = document.getElementsByClassName("mystical");
-    let re = new RegExp(`${skinsCarousell[pastIndex]}`, 'g');
+function update_skins(pastIndex) {
+    let arr = document.getElementsByClassName("mystical"); // gets all image elements on the home screen
+    let re = new RegExp(`${skinsCarousell[pastIndex ? pastIndex : skinsCarousell.indexOf("default")]}`, 'g');
     for (let img of arr) {
         img.src = img.src.replace(re, skinsCarousell[currentSkinIndex])
     }   

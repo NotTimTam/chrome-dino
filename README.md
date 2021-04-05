@@ -5,12 +5,10 @@ gamee
 - Add levels.
 - Minimum of THREE levels.
 - Add celebatory messages
-- Fix main menu skin bug
+- hitboxes on the dino sometimes don't work
 
 ### If we have extra time:
 - Fix ground rendering (skip-place) bugs.
-- Scale skins Properly
-- Add skin switching on index.html
 - Add more sounds.
 - Add themeing player AND level.
 - Fix ptero bugs. (half done?)
@@ -23,3 +21,4 @@ gamee
 - Divebombing pteros
 - Moon shoes (aka. less gravity)
 - Head start
+- Backwards / Flipped

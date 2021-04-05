@@ -4,6 +4,9 @@ let skin = localStorage.getItem('currSkin');
 
 update_colors(skin);
 
+// Updates the color of the progress head to match the theme
+document.getElementById("progress-head").src = `../images/${skin}/head_1_${skin}.png`
+
 // player data.
 let player = {
     health: 5,
@@ -11,14 +14,18 @@ let player = {
     inTouch: false,
     lastTouchCheck: false,
 
+
+    // needs to be outside jump for leveling to work
+    jumpInterval: 0.01,
+    canDoubleJump: false,
+
     jump: {
         speed: 1,
         gravity: 200,
         initialGravity: -250,
         downGravity: -275,
         height: -250,
-        interval: 0.01,
-        active: false
+        active: false,
     },
 
     buttons: {
@@ -130,7 +137,7 @@ let player = {
                         clearInterval(id);
                     } else {
                         player.pos.y = Math.round(player.jump.gravity * x ** 2 + player.jump.height * x + Math.round(screenHeight - player.pos.height - 5));
-                        x += player.jump.interval;
+                        x += player.jumpInterval;
                     }
                 }, player.jump.speed)
             } else if (player.jump.active && e.key === "ArrowDown") {
@@ -280,7 +287,7 @@ let player = {
         }
 
         return hit;
-    }
+    },
 };
 
 // now THIS RIGHT HERE is the jankiest, buggiest, most ridiculously processor-intensive jerry-rig I ever did see. - Dundee the crocidile

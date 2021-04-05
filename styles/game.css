@@ -84,7 +84,6 @@ canvas {
 #progress {
     width: 50vw;
     height: 1.25vw;
-    border-radius: calc(1.25vw / 2);
     background-color: whitesmoke;
     display: flex;
     align-items: center;

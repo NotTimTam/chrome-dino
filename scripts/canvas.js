@@ -44,7 +44,7 @@ function tick() {
         document.getElementById("distance").innerText = Math.round(player.xDistance);
 
         // lots of really simple but complicated-looking math
-        document.getElementById("progress-head").style.marginLeft = Math.round((player.xDistance / nextLevelDist) * document.getElementById("progress").offsetWidth - (document.getElementById("progress-head").offsetWidth / 2)) + 'px'
+        document.getElementById("progress-head").style.marginLeft = Math.round((player.xDistance / nextLevelDist) * document.getElementById("progress").offsetWidth - document.getElementById("progress-head").offsetWidth) + 'px'
 
         if (canTick) {
             canTick = false;

@@ -57,13 +57,13 @@ canvas {
 }
 
 .player-info {
-    height: 5vw;
+    height: 30vh;
     grid-row: 1/2;
     grid-column: 1/2;
     z-index: 1;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
     padding: 1vw;
 }
 
@@ -75,13 +75,29 @@ canvas {
     width: 3vw;
 }
 
+.progress-and-level-indicator .level-indicator{
+    padding: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-and-level-indicator .level-indicator p {
+    font-size: 3vw;
+    color: var(--base-color)
+}
+
+
+
 #distance {
+    margin-top: 1vw;
     width: 20vw;
     text-align: right;
     color: var(--base-color);
 }
 
 #progress {
+    margin-top: 1vw;
     width: 50vw;
     height: 1.25vw;
     background-color: whitesmoke;

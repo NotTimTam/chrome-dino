@@ -36,7 +36,9 @@ function canvas_draw_image(image, x, y) {
 // tick function.
 let canTick = true;
 let paused = false;
-let nextLevelDist = 500;
+let nextLevelDist = 150;
+let nextSkinLevel = skins_return().length * 350;
+let levelLast = {name: "none"};
 
 function tick() {
     if (!paused) {
@@ -44,13 +46,26 @@ function tick() {
         document.getElementById("distance").innerText = Math.round(player.xDistance);
 
         // lots of really simple but complicated-looking math
-        document.getElementById("progress-head").style.marginLeft = Math.round((player.xDistance / nextLevelDist) * document.getElementById("progress").offsetWidth - document.getElementById("progress-head").offsetWidth) + 'px'
+        document.getElementById("progress-head").style.marginLeft = Math.round((player.xDistance / nextSkinLevel) * document.getElementById("progress").offsetWidth - document.getElementById("progress-head").offsetWidth) + 'px'
 
         if (canTick) {
             canTick = false;
             if (player.xDistance >= nextLevelDist) {
-                end_game();
-                paused = true
+                let rng = level_pick_random()
+                // Makes sure the player doesn't have the same level in a row
+                while (rng === levelLast) {
+                    rng = level_pick_random();
+                }
+                levelLast = rng;
+                level_set(rng);
+                nextLevelDist += Math.round(Math.random() * (levels[rng].duration.max - levels[rng].duration.min)) + levels[rng].duration.min;
+            }
+
+            if (player.xDistance >= nextSkinLevel) {
+                let available = allSkins.filter(skin => !skins_return().includes(skin))[0]
+                skins_add(available);
+                level_display_name(available + 'skin unlocked!');
+                nextSkinLevel += 350;
             }
 
             canvas_clear();

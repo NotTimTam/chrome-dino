@@ -18,7 +18,6 @@ rightArrow.addEventListener("click", () => {
     switch_skin("right")
 })
 
-skins_add("dark");
 let skinsCarousell = skins_return();
 let currentSkinIndex = skinsCarousell.indexOf(currSkin_return());
 

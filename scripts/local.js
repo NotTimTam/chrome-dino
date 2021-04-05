@@ -3,10 +3,14 @@
 // Thanks to Tania for the info on local storage
 // https://www.taniarascia.com/how-to-use-local-storage-with-javascript/
 
+// scores
 let scores = localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : [0, 0, 0, 0, 0];
+
+// skins
 let skins = localStorage.getItem('skins') ? JSON.parse(localStorage.getItem('skins')) : ['default']
 let currSkin = localStorage.getItem('currSkin') ? localStorage.getItem('currSkin') : 'default'
 
+const allSkins = ["default", "dark", "colored", "fbla", "rtxon"]
 
 // highscores
 

@@ -84,7 +84,6 @@ main .highscores h3 {
 }
 
 main .highscores ol {
-    /* list-style: none; */
     padding: 1vw 3vw;
     font-size: 1vw;
 }

@@ -12,8 +12,8 @@ obstacles.objects.splice(obstacles.objects.indexOf(endme), 1);
 let lastBaddy = "none";
 let pHeights = [
     Math.round(screenHeight - 50),
-    Math.round(screenHeight - 75),
-    Math.round(screenHeight - 100),
+    Math.round(screenHeight - 60),
+    Math.round(screenHeight - 80),
 ]
 function spawnBaddy() {
     let random = Math.ceil(Math.random() * 5);

@@ -2,14 +2,14 @@
 gamee
 
 ## The not-so-MASSIVE list of To-dos
-- Add levels.
-- Minimum of THREE levels.
 - Add celebatory messages
+- Add popup on death
+- Fix weird glicth that happens when you open another tab
+- Add variable object spawn rates
 
 ### If we have extra time:
 - Fix ground rendering (skip-place) bugs.
 - Add more sounds.
-- Add themeing player AND level.
 - Fix ptero bugs. (half done?)
 - Add more levels.
 - Add more good game (see below) 
@@ -18,6 +18,6 @@ gamee
 - Double jump
 - Lazers
 - Divebombing pteros
-- Moon shoes (aka. less gravity)
+- metors
 - Head start
-- Backwards / Flipped
+- Upsidedown / Flipped

@@ -64,7 +64,7 @@ function tick() {
             if (player.xDistance >= nextSkinLevel) {
                 let available = allSkins.filter(skin => !skins_return().includes(skin))[0]
                 skins_add(available);
-                level_display_name(available + 'skin unlocked!');
+                level_display_name(available + ' skin unlocked!');
                 nextSkinLevel += 350;
             }
 

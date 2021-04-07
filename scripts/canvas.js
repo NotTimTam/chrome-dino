@@ -34,11 +34,12 @@ function canvas_draw_image(image, x, y) {
 }
 
 // tick function.
-let canTick = true;
-let paused = false;
-let nextLevelDist = 150;
-let nextSkinLevel = skins_return().length * 350;
-let levelLast = {name: "none"};
+let canTick = true,
+    paused = false,
+    skinDist = 250,
+    nextLevelDist = 150,
+    nextSkinLevel = playerStorage.pls.unlockedSkins.length * skinDist,
+    levelLast = undefined;
 
 function tick() {
     if (!paused) {
@@ -64,8 +65,9 @@ function tick() {
             if (player.xDistance >= nextSkinLevel) {
                 let available = allSkins.filter(skin => !skins_return().includes(skin))[0]
                 skins_add(available);
-                level_display_name(available + ' skin unlocked!');
-                nextSkinLevel += 350;
+                level_display_name(`LEVEL ${player.level}\n` + available + ' skin unlocked!');
+                nextSkinLevel += skinDist;
+                player.level ++;
             }
 
             canvas_clear();
@@ -76,6 +78,11 @@ function tick() {
             player.render();
 
             // player_render_hitbox(); // for debugging. 
+
+            // the NUMBER is how many levels there are.
+            if (player.level >= 3) {
+                win_game();
+            }
 
             canTick = true;
         }

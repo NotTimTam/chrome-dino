@@ -2,9 +2,7 @@
 gamee
 
 ## The not-so-MASSIVE list of To-dos
-- Add celebatory messages
-- Add popup on death
-- Fix weird glicth that happens when you open another tab
+- Fix weird glitch that happens when you open another tab
     - Probably as simple as pausing the game when the tab is moved away from
 - Add variable object spawn rates
 
@@ -17,9 +15,13 @@ gamee
 - Add more good game (see below) 
 
 #### Possible future features if we have extra-extra time
+- health pickups?
 - Double jump
 - Lazers
 - Divebombing pteros
 - metors
 - Head start
 - Upsidedown / Flipped
+
+##### For Ethan
+- Turn Canvas functions into an object

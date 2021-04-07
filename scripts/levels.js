@@ -1,9 +1,10 @@
 // "use strict"
 
-let skinCheckpoints = {
-    "150": "dark",
-    "350": "colored"
-}
+// -------------------------------- Might use later
+// let skinCheckpoints = {
+//     "150": "dark",
+//     "350": "colored"
+// }
 
 let defaults = {
     ground: {

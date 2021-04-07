@@ -3,63 +3,137 @@
 // Thanks to Tania for the info on local storage
 // https://www.taniarascia.com/how-to-use-local-storage-with-javascript/
 
-// scores
-let scores = localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : [0, 0, 0, 0, 0];
+let playerStorage = {
+    // Will be used for setting starting values and reseting
+    defaults: {
+        highscores: [0, 0, 0, 0, 0],
+        unlockedSkins: ["default"],
+        currSkin: "default",
+        allSkins: ["default", "night", "color", "fbla", "rtxon"],
+    },
 
-// skins
-let skins = localStorage.getItem('skins') ? JSON.parse(localStorage.getItem('skins')) : ['default']
-let currSkin = localStorage.getItem('currSkin') ? localStorage.getItem('currSkin') : 'default'
-
-const allSkins = ["default", "dark", "colored", "fbla", "rtxon"]
-
-// highscores
-
-function highscores_return() {
-    return scores; // returns an array of the highscores
-}
-
-function highscores_set(testingScore) {
-    for (let i = 0; i < scores.length; i++) {
-        if (testingScore > scores[i]) {
-            // if a score is higher then slide every item down one based on the score's index
-            scores.splice(i, 0, testingScore)
-            scores.pop();
-            
-            // Reassigns local storage to account for the new value
-            localStorage.setItem('highscores', JSON.stringify(scores))
-            break;
+    init: function () {
+        playerStorage.pls;
+        if (localStorage.getItem('playerStorage')) { // if localStorage has the property of playerStorage
+            playerStorage.pls = JSON.parse(localStorage.getItem('playerStorage'));
+        } else { // else set the local storage to its defaults
+            playerStorage.pls = playerStorage.defaults;
+            playerStorage.save();
         }
-    }
+
+        return playerStorage;
+    },
+
+    // Skins functions
+    skins_fn: {
+        unlock: function (skin) {
+            // Checks if the player already has the skin unlocked. Shouldn't be nessisary, but just in case
+            if (!playerStorage.pls.unlockedSkins.includes(skin)) playerStorage.pls.unlockedSkins.push(skin);
+            console.log(playerStorage.pls.unlockedSkins)
+            playerStorage.save();
+            return playerStorage;
+        },
+
+        set_skin: function (skin) {
+            // Makes sure the player has the skin unlocked
+            if (playerStorage.pls.unlockedSkins.includes(skin)) {
+                playerStorage.pls.currSkin = skin;
+            }
+
+            playerStorage.save();
+            return playerStorage;
+        },
+
+        slider: function (direction) {
+            // Allows for better readability
+            let us = playerStorage.pls.unlockedSkins;
+
+            // finds the index of the current skin
+            let pastIndex = us.indexOf(playerStorage.pls.currSkin);
+
+            // Updates skin based on direction
+            let newIndex;
+            if (direction === "left" || direction === "l")
+                newIndex = pastIndex - 1 < 0 ? us.length - 1 : pastIndex - 1;
+            else if (direction === "right" || direction === "r")
+                newIndex = pastIndex + 1 > us.length - 1 ? 0 : pastIndex + 1;
+
+            // Sets the new skin
+            playerStorage.skins_fn.unlock(us[newIndex]);
+            playerStorage.skins_fn.set_skin(us[newIndex]);
+
+            update_fixed_images(playerStorage.pls.unlockedSkins[pastIndex]) // refers to a function in the main.js file
+
+            playerStorage.save();
+            return playerStorage;
+        },
+
+        rand_locked: function () {
+            // Checks if all skins are already unlocked
+            let available = [];
+            // Have to do a loop becasue you can't directly compare objects in js
+            for (let skin of playerStorage.pls.allSkins) {
+                if (!playerStorage.pls.unlockedSkins.includes(skin)) {
+                    available.push(skin);
+                }
+            }
+
+            // If all skins are unlocked, return nothing
+            if (available.length) {
+                // if length > 0, find a random value of the available skins
+                return available[Math.floor(Math.random() * available.length)];
+            } else {
+                // if length is 0, return nothing
+                return;
+            }
+        },
+    },
+
+    // highscores functions
+    highscores_fn: {
+        set_score: function (score) {
+            for (let i = 0; i < playerStorage.pls.highscores.length; i++) {
+                if (score > playerStorage.pls.highscores[i]) {
+                    // if a score is higher then slide every item down one based on the score's index
+                    playerStorage.pls.highscores.splice(i, 0, score)
+                    playerStorage.pls.highscores.pop();
+
+                    break;
+                }
+            }
+
+            playerStorage.save();
+            return playerStorage;
+        },
+    },
+
+    reset(val) {
+        // Resets a locally stored value to its default
+        playerStorage.pls[val] = playerStorage.defaults[val];
+
+        playerStorage.save()
+        return playerStorage;
+    },
+
+    save() {
+        // Saves all values in pls to local storage
+        localStorage.setItem('playerStorage', JSON.stringify(playerStorage.pls));
+
+        return playerStorage;
+    },
+
+    get_prop(prop) {
+        return playerStorage.pls[prop];
+    },
 }
 
-// the following should be used for debugging only
-function highscores_reset() {
-    localStorage.setItem("highscores", JSON.stringify([0, 0, 0, 0, 0]))
-}
+// Intializes playerStorage
+playerStorage.init(); 
 
-// Skins
+// --- Testing --- //
 
-function skins_return() {
-    return skins;
-}
+// playerStorage.reset("unlockedSkins")
+playerStorage.skins_fn.unlock('night');
 
-function skins_add(skin) {
-    // If skin isn't already in stored locally
-    if (!skins.includes(skin)) {
-        skins.push(skin)
-        localStorage.setItem("skins", JSON.stringify(skins))
-    }
-}
 
-// Debugging
-function skins_reset() {
-    localStorage.setItem('skins', JSON.stringify(["default"]))
-}
 
-function currSkin_change(skin) {
-    localStorage.setItem('currSkin', skin)
-}
-
-function currSkin_return() {
-    return currSkin;
-}

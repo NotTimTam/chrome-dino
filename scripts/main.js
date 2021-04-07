@@ -1,46 +1,38 @@
 "use strict"
 
-window.onload = function () {
-    let scoreList = document.getElementById('highscores-list');
-    let highscores = highscores_return();
-    for (let i = 0; i < scoreList.children.length; i++) {
-        scoreList.children[i].innerHTML = highscores[i];
-    }
+// Updates the fixed images on the home page
+function update_fixed_images (name) {
+    let images = document.getElementsByClassName("mystical"), // gets all image elements on the home screen
+        re = new RegExp(`${name}`, 'g');
+    
+    for (let img of images)
+        img.src = img.src.replace(re, playerStorage.pls.currSkin);
 }
 
-const leftArrow = document.getElementById("arrow-left")
-const rightArrow = document.getElementById("arrow-right")
+// The main function only needs to be run once at the begining of the program
+let main = function () {
+    // --- Updating highscore variables --- //
+    let scoreList = document.getElementById('highscores-list'), 
+        highscores = playerStorage.pls.highscores,
+        scorelistChildren = scoreList.children;
 
-leftArrow.addEventListener("click", () => {
-    switch_skin("left")
-})
-rightArrow.addEventListener("click", () => {
-    switch_skin("right")
-})
+    for (let i = 0; i < scorelistChildren.length; i++)
+        scorelistChildren[i].innerHTML = highscores[i];
 
-let skinsCarousell = skins_return();
-let currentSkinIndex = skinsCarousell.indexOf(currSkin_return());
+    // --- Updating images based on skin values --- //
+    update_fixed_images(playerStorage.defaults.currSkin); // uses defualt becuase that is what normally loads on the page
 
-update_colors(skinsCarousell[currentSkinIndex]);
-update_skins(null) 
+    // --- Adding event listeners to the skins switching arrows --- //
+    document
+        .getElementById("arrow-left")
+        .addEventListener("click", () => {
+            playerStorage.skins_fn.slider("left")
+        })
 
-
-function switch_skin(direction) {
-    let pastIndex = currentSkinIndex;
-    if (direction === "left") {
-        currentSkinIndex = currentSkinIndex - 1 < 0 ? skinsCarousell.length - 1 : currentSkinIndex - 1;
-    } else if (direction === "right") {
-        currentSkinIndex = currentSkinIndex + 1 > skinsCarousell.length - 1 ? 0 : currentSkinIndex + 1;
-    }
-    currSkin_change(skinsCarousell[currentSkinIndex]);
-    update_colors(skinsCarousell[currentSkinIndex]);
-    update_skins(pastIndex);
+    document
+        .getElementById("arrow-right")
+        .addEventListener("click", () => {
+            playerStorage.skins_fn.slider("right")
+        })
 }
-
-function update_skins(pastIndex) {
-    let arr = document.getElementsByClassName("mystical"); // gets all image elements on the home screen
-    let re = new RegExp(`${skinsCarousell[pastIndex ? pastIndex : skinsCarousell.indexOf("default")]}`, 'g');
-    for (let img of arr) {
-        img.src = img.src.replace(re, skinsCarousell[currentSkinIndex])
-    }   
-}
+main()

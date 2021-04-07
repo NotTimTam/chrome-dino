@@ -343,14 +343,27 @@ function object_render_hitbox(object) {
 let highscoresAlreadySet = false;
 // end the game.
 function end_game() {
-    player.anim.currentAnim = "dead";
+    body.innerHTML = `
+        <div class="death">
+            <h1>YOU LOST</h1>
+            <p>Score: ${Math.round(player.xDistance)}</p>
+            <a href="index.html"><button>RESTART</button></a>
+        </div>
+    `;
+    if (!highscoresAlreadySet) {
+        playerStorage.highscores_fn.set_score(Math.round(player.xDistance)); 
+        highscoresAlreadySet = true;
+    }
+}
 
-    window.setTimeout(function () {
-        for (var i = 0; i < 999; i++) {
-            window.clearInterval(i);
-        }
-    }, 50);
-
+function win_game() {
+    body.innerHTML = `
+        <div class="death">
+            <h1>YOU WON!!!</h1>
+            <p>Score: ${Math.round(player.xDistance)}</p>
+            <a href="index.html"><button>RETURN TO MENU</button></a>
+        </div>
+    `;
     if (!highscoresAlreadySet) {
         highscores_set(Math.round(player.xDistance)); 
         highscoresAlreadySet = true;

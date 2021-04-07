@@ -1,8 +1,6 @@
 "use strict";
 
-let skin = localStorage.getItem('currSkin');
-
-update_colors(skin);
+let skin = playerStorage.pls.currSkin;
 
 // Updates the color of the progress head to match the theme
 document.getElementById("progress-head").src = `../images/${skin}/head_1_${skin}.png`
@@ -11,6 +9,7 @@ document.getElementById("progress-head").src = `../images/${skin}/head_1_${skin}
 let player = {
     health: 5,
     xDistance: 0,
+    level: 1,
     inTouch: false,
     lastTouchCheck: false,
 
@@ -91,7 +90,7 @@ let player = {
             }, 500);
 
             for (let i = 1; i <= player.health; i++) {
-                document.getElementById("health").innerHTML += `<img src="/images/heart.png" alt="heart">`;
+                document.getElementById("health").innerHTML += `<img src="../images/heart.png" alt="heart">`;
             }
         }
 

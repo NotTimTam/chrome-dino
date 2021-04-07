@@ -1,93 +1,103 @@
 "use strict";
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+let canvas = {
+    display: document.getElementById('canvas'),
+    ctx: document.getElementById('canvas').getContext('2d'),
 
-// canvas dimensions that factor in the screen width.
-function canvas_fix_resolution() {
-    screen_fix_size();
+    canTick: true,
+    paused: false,
 
-    canvas.setAttribute("width", screenWidth);
-    canvas.setAttribute("height", screenHeight);
+    skinDist: 250, // might relocate to player object
+    nextLevelDist: 150, // might relocate to player object
+    nextSkinLevel: playerStorage.pls.unlockedSkins.length * 250, // might relocate to player object
+    
+    init: function () {
+        canvas.fix_resolution();
+        window.addEventListener("resize", canvas.fix_resolution);
 
-    // reset object positioning on the canvas.
-    ground_reset_pos();
-    player_reset_pos();
-}
-canvas_fix_resolution();
-window.addEventListener("resize", canvas_fix_resolution);
+        canvas.load_frames();
 
-// clear the canvas.
-function canvas_clear() {
-    ctx.clearRect(0, 0, screenWidth, screenHeight);
-}
+        window.setInterval(canvas.tick, 16.7); // 16.7 is 60fps
+    },
 
-// load all animation frames.
-function canvas_load_frames() {
-    player.load_images();
-}
-canvas_load_frames();
+    // canvas dimensions that factor in the screen width.
+    fix_resolution: function () {
+        // I'm guessing this is a reminat, I'm not going to delete it, just in case
+        // canvas.screen_fix_size();
 
-// render an image.
-function canvas_draw_image(image, x, y) {
-    ctx.drawImage(image, x, y);
-}
+        canvas.display.width = screenWidth;
+        canvas.display.height = screenHeight;
 
-// tick function.
-let canTick = true,
-    paused = false,
-    skinDist = 250,
-    nextLevelDist = 150,
-    nextSkinLevel = playerStorage.pls.unlockedSkins.length * skinDist,
-    levelLast = undefined;
+        ground.reset_pos();
+        player.reset_pos();
+    },
 
-function tick() {
-    if (!paused) {
-        player.xDistance += 0.18; // POINT EIGHTEEN POINT EIGHTEEN
-        document.getElementById("distance").innerText = Math.round(player.xDistance);
+    // clear the canvas.
+    clear: function () {
+        canvas.ctx.clearRect(0, 0, screenWidth, screenHeight);
+    },
 
-        // lots of really simple but complicated-looking math
-        document.getElementById("progress-head").style.marginLeft = Math.round((player.xDistance / nextSkinLevel) * document.getElementById("progress").offsetWidth - document.getElementById("progress-head").offsetWidth) + 'px'
+    // load all animation frames.
+    load_frames: function () {
+        player.load_images();
+    },
 
-        if (canTick) {
-            canTick = false;
-            if (player.xDistance >= nextLevelDist) {
-                let rng = level_pick_random()
-                // Makes sure the player doesn't have the same level in a row
-                while (rng === levelLast) {
-                    rng = level_pick_random();
+    draw_image: function (image, x, y) {
+        canvas.ctx.drawImage(image, x, y);
+    },
+
+    tick: function () {
+        if (!canvas.paused) {
+            player.xDistance += 0.18; // POINT EIGHTEEN POINT EIGHTEEN
+            document.getElementById("distance").innerText = Math.round(player.xDistance);
+
+            // lots of really simple but complicated-looking math that handles progress bar movement
+            document.getElementById("progress-head").style.marginLeft = Math.round((player.xDistance / canvas.nextSkinLevel) * document.getElementById("progress").offsetWidth - document.getElementById("progress-head").offsetWidth) + 'px'
+
+            if (canvas.canTick) {
+                canvas.canTick = false;
+                if (player.xDistance >= canvas.nextLevelDist) {
+                    let rng = challenges.get_rand();
+                    // Makes sure the player doesn't have the same level in a row
+                    console.log(rng, challenges.last)
+                    while (rng === challenges.last) {
+                        rng = challenges.get_rand();
+                    }
+                    challenges.activate(rng);
+
+                    // ----------------------------------------- FIGURE OUT WHAT TO DO WITH THIS ----------------------------------------- // 
+                    canvas.nextLevelDist += Math.round(Math.random() * (challenges.types[rng].duration.max - challenges.types[rng].duration.min)) + challenges.types[rng].duration.min;
                 }
-                levelLast = rng;
-                level_set(rng);
-                nextLevelDist += Math.round(Math.random() * (levels[rng].duration.max - levels[rng].duration.min)) + levels[rng].duration.min;
+
+                if (player.xDistance >= canvas.nextSkinLevel) {
+                    let available = playerStorage.skins_fn.get_rand_locked();
+                    playerStorage.skins_fn.unlock(available);
+
+                    display.announce(`LEVEL ${player.level}\n${available} skin unlocked!`);
+
+                    canvas.nextSkinLevel += canvas.skinDist;
+                    player.level ++;
+                }
+
+                canvas.clear();
+
+                obstacles.render_back();
+                ground.render();
+                obstacles.render();
+                player.render();
+
+                // player_render_hitbox(); // for debugging. 
+
+                // the NUMBER is how many levels there are.
+                if (player.level >= 3) {
+                    win_game();
+                }
+
+                canvas.canTick = true;
             }
-
-            if (player.xDistance >= nextSkinLevel) {
-                let available = allSkins.filter(skin => !skins_return().includes(skin))[0]
-                skins_add(available);
-                level_display_name(`LEVEL ${player.level}\n` + available + ' skin unlocked!');
-                nextSkinLevel += skinDist;
-                player.level ++;
-            }
-
-            canvas_clear();
-
-            obstacles.render_back();
-            ground.render();
-            obstacles.render();
-            player.render();
-
-            // player_render_hitbox(); // for debugging. 
-
-            // the NUMBER is how many levels there are.
-            if (player.level >= 3) {
-                win_game();
-            }
-
-            canTick = true;
+        } else {
+            return;
         }
-    } else {
-        return;
     }
 }
-window.setInterval(tick, 16.7); // 16.7 is 60fps
+canvas.init();

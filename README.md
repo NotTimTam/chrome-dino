@@ -24,4 +24,4 @@ gamee
 - Upsidedown / Flipped
 
 ##### For Ethan
-- Turn Canvas functions into an object
+- Ground above objects in index.html

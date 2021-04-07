@@ -29,7 +29,6 @@ let playerStorage = {
         unlock: function (skin) {
             // Checks if the player already has the skin unlocked. Shouldn't be nessisary, but just in case
             if (!playerStorage.pls.unlockedSkins.includes(skin)) playerStorage.pls.unlockedSkins.push(skin);
-            console.log(playerStorage.pls.unlockedSkins)
             playerStorage.save();
             return playerStorage;
         },
@@ -38,6 +37,7 @@ let playerStorage = {
             // Makes sure the player has the skin unlocked
             if (playerStorage.pls.unlockedSkins.includes(skin)) {
                 playerStorage.pls.currSkin = skin;
+                colors.update_document(skin);
             }
 
             playerStorage.save();
@@ -68,7 +68,7 @@ let playerStorage = {
             return playerStorage;
         },
 
-        rand_locked: function () {
+        get_rand_locked: function () {
             // Checks if all skins are already unlocked
             let available = [];
             // Have to do a loop becasue you can't directly compare objects in js
@@ -133,7 +133,7 @@ playerStorage.init();
 // --- Testing --- //
 
 // playerStorage.reset("unlockedSkins")
-playerStorage.skins_fn.unlock('night');
+// playerStorage.skins_fn.unlock('night');
 
 
 

@@ -11,7 +11,7 @@ function update_fixed_images (name) {
 
 // The main function only needs to be run once at the begining of the program
 let main = function () {
-    // --- Updating highscore variables --- //
+    // --- Updating highscore --- //
     let scoreList = document.getElementById('highscores-list'), 
         highscores = playerStorage.pls.highscores,
         scorelistChildren = scoreList.children;
@@ -34,5 +34,8 @@ let main = function () {
         .addEventListener("click", () => {
             playerStorage.skins_fn.slider("right")
         })
+    
+    // --- Updates Colors --- //
+    colors.update_document(playerStorage.pls.currSkin)
 }
 main()

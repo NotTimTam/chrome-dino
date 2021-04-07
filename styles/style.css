@@ -10,8 +10,8 @@
 }
 
 :root {
-    --base-color: #535353;
-    --text-color: #ffffff;
+    --primary-color: #ffffff;
+    --secondary-color: #535353;
 }
 
 img {
@@ -19,7 +19,7 @@ img {
 }
 
 body {
-    background-color: var(--text-color)
+    background-color: var(--primary-color)
 }
 
 header {
@@ -43,7 +43,7 @@ header h1 {
     font-size: 4vw;
     font-family: "pixel";
     text-align: center;
-    color: var(--base-color);
+    color: var(--secondary-color);
 }
 
 main {
@@ -70,12 +70,12 @@ main {
 
 main .highscores {
     font-family: "pixel";
-    color: var(--text-color);
+    color: var(--primary-color);
     font-size: .75vw;
     width: 17.5vw;
     height: 32.5vh;
     padding: 1vw;
-    background-color: var(--base-color);
+    background-color: var(--secondary-color);
     z-index: 5;
 }
 
@@ -129,7 +129,7 @@ main .skin-select .arrow * {
     grid-column: 1/2;
     width: 3.5vw;
     height: 1vw;
-    background-color: var(--base-color);
+    background-color: var(--secondary-color);
 }
 
 main .skin-select .arrow .skybound {
@@ -150,10 +150,10 @@ main .help {
     font-family: "pixel";
     font-size: .75vw;
     width: 17.5vw;
-    max-height: 50vh;
+    height:  32.5vh;
     padding: 10px;
-    background-color: var(--base-color);
-    color: var(--text-color);
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
     letter-spacing: 1px;
     word-spacing: 5px;
     text-align: left;
@@ -195,14 +195,12 @@ footer .on-ground img.pt {
 
 footer a {
     padding: 1vw 2.5vw;
-    background-color: var(--base-color);
+    background-color: var(--secondary-color);
     justify-self: flex-start;
     font-family: "pixel";
     font-size: 2vw;
-    color: var(--text-color);
+    color: var(--primary-color);
     text-decoration: none;
-
-    transition: all 0.3s;
 }
 footer a:hover {
     transform: scale(1.0625);

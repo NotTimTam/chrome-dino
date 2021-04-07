@@ -2,6 +2,9 @@
 
 let skin = playerStorage.pls.currSkin;
 
+// Updates the color theme
+colors.update_document(skin);
+
 // Updates the color of the progress head to match the theme
 document.getElementById("progress-head").src = `../images/${skin}/head_1_${skin}.png`
 
@@ -12,7 +15,7 @@ let player = {
     level: 1,
     inTouch: false,
     lastTouchCheck: false,
-
+    animationLoop: null,
 
     // needs to be outside jump for leveling to work
     jumpInterval: 0.01,
@@ -77,16 +80,21 @@ let player = {
         }
     ],
 
+    init: function () {
+        player.events();
+        player.animationLoop = setInterval(player.increase_frame, 1000 / player.anim.speed);
+    },
+
     // take damage
     take_damage: () => {
         if (player.inTouch && player.lastTouchCheck != player.inTouch) {
             player.health--;
             document.getElementById("health").innerHTML = "";
 
-            canvas.classList.add("shake_animation");
+            canvas.display.classList.add("shake_animation");
 
             window.setTimeout(function () {
-                canvas.classList.remove("shake_animation");
+                canvas.display.classList.remove("shake_animation");
             }, 500);
 
             for (let i = 1; i <= player.health; i++) {
@@ -128,18 +136,25 @@ let player = {
                 let x = 0; // Tracks the temporary player x position for the quadratic curve
                 player.buttons.up = true;
                 player.jump.active = true; // Sets it so the player is currently jumping
+
                 let id = setInterval(() => {
                     if (player.pos.y > Math.round(screenHeight - player.pos.height - 5)) {
+
                         player.pos.y = Math.round(screenHeight - player.pos.height - 5);
                         player.jump.active = false;
                         player.jump.height = player.jump.initialGravity;
                         clearInterval(id);
+
                     } else {
+
                         player.pos.y = Math.round(player.jump.gravity * x ** 2 + player.jump.height * x + Math.round(screenHeight - player.pos.height - 5));
                         x += player.jumpInterval;
+
                     }
                 }, player.jump.speed)
+
             } else if (player.jump.active && e.key === "ArrowDown") {
+
                 let id2 = setInterval(() => {
                     if (player.pos.y >= Math.round(screenHeight - player.pos.height - 5)) {
                         clearInterval(id2)
@@ -147,6 +162,7 @@ let player = {
                         player.jump.height -= player.jump.downGravity / 100;
                     }
                 }, player.jump.speed)
+
             } else if (e.key === "ArrowDown") {
 
                 player.pos.height = 30;
@@ -158,6 +174,8 @@ let player = {
 
         window.addEventListener("keyup", () => {
             player.buttons.down = false;
+
+            // the following fixes acidental flying when crouched
             if (!player.jump.active) {
                 player.pos.height = 47;
                 player.pos.y = Math.round(screenHeight - player.pos.height - 5);
@@ -193,7 +211,7 @@ let player = {
 
         let frame = player.get_frame();
 
-        canvas_draw_image(frame, player.pos.x, player.pos.y);
+        canvas.draw_image(frame, player.pos.x, player.pos.y);
     },
 
     // set the player's animation based on the current action.
@@ -287,21 +305,17 @@ let player = {
 
         return hit;
     },
+
+    reset_pos: function () {
+        player.pos.y = Math.round(screenHeight - player.pos.height - 5);
+    },
 };
 
-// now THIS RIGHT HERE is the jankiest, buggiest, most ridiculously processor-intensive jerry-rig I ever did see. - Dundee the crocidile
 window.setTimeout(() => { player.jump.active = true; }, 100);
 window.setTimeout(() => { player.jump.active = false; }, 250);
 
-player.events();
+player.init();
 
-// Resets the players position if the window is resized 
-function player_reset_pos () {
-    player.pos.y = Math.round(screenHeight - player.pos.height - 5);
-}
-
-// begin animating the player.
-let player_animate_loop = setInterval(player.increase_frame, 1000 / player.anim.speed);
 
 // render the player's hitbox. (debugging only)
 function player_render_hitbox() {

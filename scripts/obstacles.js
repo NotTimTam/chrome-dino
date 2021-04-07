@@ -15,6 +15,10 @@ let ground = {
         y: 0,
     },
 
+    init: function () {
+        ground.load_image(`../images/${skin}/ground_1_${skin}.png`);
+    },
+
     load_image: (src) => {
         let image = new Image();
         image.src = src;
@@ -39,16 +43,16 @@ let ground = {
     },
 
     render: () => {
-        canvas_draw_image(ground.image, ground.step1.x, ground.step1.y);
-        canvas_draw_image(ground.image, ground.step2.x, ground.step2.y);
+        canvas.draw_image(ground.image, ground.step1.x, ground.step1.y);
+        canvas.draw_image(ground.image, ground.step2.x, ground.step2.y);
+    },
+
+    reset_pos: function (offset = 28) {
+        ground.step1.y = Math.round(screenHeight - 16);
+        ground.step2.y = Math.round(screenHeight - 16);
     },
 };
-ground.load_image(`../images/${skin}/ground_1_${skin}.png`);
-
-function ground_reset_pos(offset = 28) {
-    ground.step1.y = Math.round(screenHeight - 16);
-    ground.step2.y = Math.round(screenHeight - 16);
-}
+ground.init();
 
 // obstacles.
 let obstacles = {
@@ -127,7 +131,7 @@ class Cloud {
     }
 
     render() {
-        canvas_draw_image(this.image, this.x, this.y);
+        canvas.draw_image(this.image, this.x, this.y);
     }
     
 }
@@ -180,7 +184,7 @@ class Cactus {
     }
 
     render() {
-        canvas_draw_image(this.image, this.x, this.y);
+        canvas.draw_image(this.image, this.x, this.y);
     }
 
     calculate_hitbox() {
@@ -325,7 +329,7 @@ class Ptero {
 
     render() {
         let frame = this.get_frame();
-        canvas_draw_image(this.anim.images[this.anim.currentAnim][this.anim.frame], this.x, this.y);
+        canvas.draw_image(this.anim.images[this.anim.currentAnim][this.anim.frame], this.x, this.y);
     }
 }
 

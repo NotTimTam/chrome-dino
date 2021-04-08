@@ -6,7 +6,7 @@ let skin = playerStorage.pls.currSkin;
 colors.update_document(skin);
 
 // Updates the color of the progress head to match the theme
-document.getElementById("progress-head").src = `./images/${skin}/head_1_${skin}.png`
+document.getElementById("progress-head").src = `/images/${skin}/head_1_${skin}.png`
 
 // player data.
 let player = {
@@ -40,18 +40,18 @@ let player = {
         currentAnim: "stand",
         sources: {
             stand: [
-                `./images/${skin}/stand_1_${skin}.png`,
+                `/images/${skin}/stand_1_${skin}.png`,
             ],
             run: [
-                `./images/${skin}/run_1_${skin}.png`,
-                `./images/${skin}/run_2_${skin}.png`,
+                `/images/${skin}/run_1_${skin}.png`,
+                `/images/${skin}/run_2_${skin}.png`,
             ],
             duck: [
-                `./images/${skin}/duck_1_${skin}.png`,
-                `./images/${skin}/duck_2_${skin}.png`,
+                `/images/${skin}/duck_1_${skin}.png`,
+                `/images/${skin}/duck_2_${skin}.png`,
             ],
             dead: [
-                `./images/${skin}/die_1_${skin}.png`,
+                `/images/${skin}/die_1_${skin}.png`,
             ]
         },
         images: { stand: [], run: [], duck: [], dead: [] }
@@ -98,7 +98,7 @@ let player = {
             }, 500);
 
             for (let i = 1; i <= player.health; i++) {
-                document.getElementById("health").innerHTML += `<img src="./images/heart.png" alt="heart">`;
+                document.getElementById("health").innerHTML += `<img src="/images/heart.png" alt="heart">`;
             }
         }
 

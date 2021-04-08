@@ -4,6 +4,7 @@
 
 let challenges = {
     last: null,
+    nextDist: 100,
 
     get_rand: function () {
         // gets a random challenge from the levels object
@@ -89,7 +90,6 @@ let challenges = {
 
     activate: function (challenge) {
         let currChal = challenges.types[challenge];
-        console.log(currChal)
         challenges.last = currChal.name;
     
         // Displays to the player the current level they are on
@@ -112,7 +112,6 @@ let challenges = {
                         break;
                 }
 
-                console.log(challenges.defaults[prop])
                 for (let path in challenges.defaults[prop]) {
                     p[path] = currChal.properties[prop] ? currChal.properties[prop][path] : challenges.defaults[prop][path];
                 }
@@ -163,7 +162,7 @@ let display = {
         } else {
             // Recursivily tries to display
             setTimeout(() => {
-                display.announce(name)
+                display.announce(text)
             }, 1000)
         }
     }

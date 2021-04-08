@@ -9,7 +9,8 @@ let playerStorage = {
         highscores: [0, 0, 0, 0, 0],
         unlockedSkins: ["default"],
         currSkin: "default",
-        allSkins: ["default", "night", "color", "fbla", "rtxon"],
+        // Skins to add: "color", "fbla", "rtxon";
+        allSkins: ["default", "night"],
     },
 
     init: function () {

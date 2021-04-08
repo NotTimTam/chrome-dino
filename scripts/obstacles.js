@@ -243,11 +243,19 @@ class Cactus {
 
 // pterodactyl.
 class Ptero {
+    static get_rand_height() {
+        return [Math.round(screenHeight - 50),
+        Math.round(screenHeight - 60),
+        Math.round(screenHeight - 80)][Math.floor(Math.random() * 3)]
+    }
+
     constructor(y) {
-        this.width = 0,
-        this.height = 0,
-        this.x = screenWidth,
-        this.y = y,
+        this.width = 0;
+        this.height = 0;
+        this.x = screenWidth;
+        this.y = y;
+
+        
 
         this.speed = 2;
         this.hitbox = [];
@@ -341,35 +349,5 @@ function object_render_hitbox(object) {
         ctx.lineWidth = 1;
         ctx.rect(object.x + box.offsetX, object.y + box.offsetY, box.width, box.height);
         ctx.stroke();
-    }
-}
-
-let highscoresAlreadySet = false;
-// end the game.
-function end_game() {
-    body.innerHTML = `
-        <div class="death">
-            <h1>YOU LOST</h1>
-            <p>Score: ${Math.round(player.xDistance)}</p>
-            <a href="index.html"><button>RESTART</button></a>
-        </div>
-    `;
-    if (!highscoresAlreadySet) {
-        playerStorage.highscores_fn.set_score(Math.round(player.xDistance)); 
-        highscoresAlreadySet = true;
-    }
-}
-
-function win_game() {
-    body.innerHTML = `
-        <div class="death">
-            <h1>YOU WON!!!</h1>
-            <p>Score: ${Math.round(player.xDistance)}</p>
-            <a href="index.html"><button>RETURN TO MENU</button></a>
-        </div>
-    `;
-    if (!highscoresAlreadySet) {
-        highscores_set(Math.round(player.xDistance)); 
-        highscoresAlreadySet = true;
     }
 }

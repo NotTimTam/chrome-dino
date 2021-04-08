@@ -12,7 +12,6 @@ document.getElementById("progress-head").src = `../images/${skin}/head_1_${skin}
 let player = {
     health: 5,
     xDistance: 0,
-    level: 1,
     inTouch: false,
     lastTouchCheck: false,
     animationLoop: null,
@@ -81,6 +80,7 @@ let player = {
     ],
 
     init: function () {
+        player.load_images();
         player.events();
         player.animationLoop = setInterval(player.increase_frame, 1000 / player.anim.speed);
     },
@@ -105,7 +105,7 @@ let player = {
         player.lastTouchCheck = player.inTouch;
 
         if (player.health <= 0) {
-            end_game();
+            levelControler.lose();
         }
     },
 

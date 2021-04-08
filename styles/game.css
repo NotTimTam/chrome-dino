@@ -86,11 +86,9 @@ canvas {
 
 .progress-and-level-indicator .level-indicator p {
     font-size: 3vw;
-    color: var(--base-color);
+    color: var(--secondary-color);
     text-align: center;
 }
-
-
 
 #distance {
     margin-top: 1vw;
@@ -143,6 +141,7 @@ canvas {
     transition: all 0.3s;
 
     border: none;
+    outline: none;
 
     background-color: var(--secondary-color);
     color: var(--primary-color);

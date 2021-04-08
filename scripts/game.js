@@ -4,17 +4,11 @@ window.setInterval(ground.tick, 1);
 window.setInterval(obstacles.tick_back, 1);
 window.setInterval(obstacles.tick, 1);
 
-// now THIS RIGHT HERE is the jankiest, buggiest, most ridiculously processor-intensive jerry-rig I ever did see.
-// gets rid of first ptero not having a hitbox
+// gets rid of first ptero not having a hitbox, temp fix
 let endme = new Ptero();
 obstacles.objects.splice(obstacles.objects.indexOf(endme), 1);
 
 let lastBaddy = "none";
-let pHeights = [
-    Math.round(screenHeight - 50),
-    Math.round(screenHeight - 60),
-    Math.round(screenHeight - 80),
-]
 function spawnBaddy() {
     let random = Math.ceil(Math.random() * 5);
 
@@ -23,7 +17,7 @@ function spawnBaddy() {
         lastBaddy = "cactus";
     } else {
         if (player.xDistance >= 100) {
-            let height = pHeights[Math.floor(Math.random() * pHeights.length)];
+            let height = Ptero.get_rand_height();
             let ptero = new Ptero(height);
             lastBaddy = "ptero";
         } else {
